@@ -17,44 +17,52 @@ const igdb = apicalypse({
 });
 
 router.get('/:host', (req, res) => {
-    const host = req.params.host;
-    const friends = req.query.friends;
+    const hostId = req.params.host;
+    const friendIds = req.query.friends;
 
-    const steamIds = [host];
+    const steamIds = [hostId];
 
-    if (friends != null) {
-        steamIds.push(...friends);
+    // TOOD: Suport CSV
+    if (friendIds != null) {
+        steamIds.push(...friendIds);
     }
 
-    Promise.map(steamIds, steamid => steam.getOwnedGames(steamid))
+    Promise.map(steamIds, steamId => steam.getOwnedGames(steamId))
         .then(userGames => {
             const sharedGames = intersection(...userGames);
 
+            // Split into batches of 50 to comply with API limit.
             let batches = []
             for (let i = 0; i < sharedGames.length; i += 50) {
                 batches.push(sharedGames.slice(i, i + 50));
             }
 
-            return Promise.map(batches, batch => {
-                const urls = batch.map(id => `https://store.steampowered.com/app/${id}`);
+            return Promise.all([
+                Promise.map(batches, batch => {
+                    // external_games.uid returns incorrect results, using URLs
+                    const urls = batch.map(id => `https://store.steampowered.com/app/${id}`);
 
-                const query = igdb
-                    .fields([
-                        'name',
-                        'cover.image_id',
-                    ])
-                    .limit(50)
-                    .filter([
-                        'game_modes.slug = "multiplayer"',
-                        `websites.url = ("${urls.join('","')}")`,
-                        'game_modes.id = 2'
-                    ]);
+                    const query = igdb
+                        .fields([
+                            'name',
+                            'cover.image_id',
+                        ])
+                        .limit(50)
+                        .filter([
+                            'game_modes.slug = "multiplayer"',
+                            `websites.url = ("${urls.join('","')}")`,
+                            'game_modes.id = 2'
+                        ]);
 
-                return query.request('/games');
-            });
+                    return query.request('/games');
+                }),
+                steam.getPlayerSummaries(steamIds)
+            ]);
         })
-        .then(detailsBatches => {
-            const games = detailsBatches.map(batch => batch.data).flat()
+        .then(([gameBatches, summaries]) => {
+            const games = gameBatches.map(batch => batch.data).flat()
+            // https://stackoverflow.com/a/45898081/10336544
+            const { [hostId]: host, ...friends } = summaries;
 
             return res.render('app', {
                 host,
@@ -63,7 +71,8 @@ router.get('/:host', (req, res) => {
             });
         })
         .catch(error => {
-            return res.status(400).json(error);
+            res.status(500).json(error)
+            console.error(error);
         })
 })
 
