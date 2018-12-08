@@ -6,7 +6,7 @@ const apicalypse = require('@igdb/apicalypse').default;
 const SteamAPI = require('../utils/steamapi');
 
 const router = express.Router();
-const steam = SteamAPI();
+const Steam = SteamAPI();
 const igdb = apicalypse({
     baseURL: "https://endpoint-alpha.igdb.com",
     headers: {
@@ -18,16 +18,19 @@ const igdb = apicalypse({
 
 router.get('/:host', (req, res) => {
     const hostId = req.params.host;
-    const friendIds = req.query.friends;
+    let friendIds = req.query.friends;
 
     const steamIds = [hostId];
 
-    // TOOD: Suport CSV
     if (friendIds != null) {
+        if (typeof friendIds == 'string' || friendIds instanceof String) {
+            friendIds = friendIds.split(',');
+        }
+
         steamIds.push(...friendIds);
     }
 
-    Promise.map(steamIds, steamId => steam.getOwnedGames(steamId))
+    Promise.map(steamIds, steamId => Steam.GetOwnedGames(steamId))
         .then(userGames => {
             const sharedGames = intersection(...userGames);
 
@@ -50,13 +53,12 @@ router.get('/:host', (req, res) => {
                         .limit(50)
                         .filter([
                             'game_modes.slug = "multiplayer"',
-                            `websites.url = ("${urls.join('","')}")`,
-                            'game_modes.id = 2'
+                            `websites.url = ("${urls.join('","')}")`
                         ]);
 
                     return query.request('/games');
                 }),
-                steam.getPlayerSummaries(steamIds)
+                Steam.GetPlayerSummaries(steamIds)
             ]);
         })
         .then(([gameBatches, summaries]) => {
@@ -71,9 +73,9 @@ router.get('/:host', (req, res) => {
             });
         })
         .catch(error => {
-            res.status(500).json(error)
+            res.status(500).json(error.message);
             console.error(error);
-        })
-})
+        });
+});
 
 module.exports = router;
