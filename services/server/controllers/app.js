@@ -3,11 +3,11 @@ const express = require('express');
 const Promise = require('bluebird');
 const intersection = require('array-intersection');
 const apicalypse = require('@igdb/apicalypse').default;
-const SteamAPI = require('../utils/steamapi');
+const steamWrapper = require('steam-wrapper');
 
 const router = express.Router();
-const Steam = SteamAPI();
-const igdb = apicalypse({
+const Steam = steamWrapper();
+const IGDB = apicalypse({
     baseURL: "https://endpoint-alpha.igdb.com",
     headers: {
         'Accept': 'application/json',
@@ -45,7 +45,7 @@ router.get('/:host', (req, res) => {
                     // external_games.uid returns incorrect results, using URLs
                     const urls = batch.map(id => `https://store.steampowered.com/app/${id}`);
 
-                    const query = igdb
+                    const query = IGDB
                         .fields([
                             'name',
                             'cover.image_id',
@@ -66,14 +66,14 @@ router.get('/:host', (req, res) => {
             // https://stackoverflow.com/a/45898081/10336544
             const { [hostId]: host, ...friends } = summaries;
 
-            return res.render('app', {
+            res.render('app', {
                 host,
                 friends,
                 games
             });
         })
         .catch(error => {
-            res.status(500).json(error.message);
+            if(!res.headersSent) res.status(500).json(error.message);
             console.error(error);
         });
 });
