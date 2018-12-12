@@ -1,45 +1,32 @@
-<!DOCTYPE html>
-<html>
-<head>
-	<title></title>
-	<link rel="stylesheet" type="text/css" href="normalize.css">
-	<link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,700" rel="stylesheet">
-</head>
-<body>
-	<div class="container">
-		<div class="profile">
-			<h1 class="logo">Cohesion</h1>
-			<div class="profile-info">
-				<img class="profile-image" src="{{host.avatarfull}}">
-				<p class="profile-name">{{host.personaname}}</p>
-			</div>
-			<form class="friend-form" method="GET">
-				{{#each friends}}
-				<input type="hidden" name="friends[]" value="{{this.steamid}}">
-				{{/each}}
-				<input class="friend-input" type="input" name="friends[]" placeholder="add friends">
-				<input style="margin-left: 10px; border-radius: 50%;" type="submit" value="&#8594">
-			</form>
-			<ul class="friend-list">
-				{{#each friends}}
-				<li class="friend">
-					<img class="friend-image" src="{{this.avatarfull}}">
-					<p class="friend-name">{{this.personaname}}</p>	
-				</li>
-				{{/each}}
-			</ul>
+<div class="container">
+	<div class="profile">
+		<h1 class="logo">Cohesion</h1>
+		<div class="profile-info">
+			<img class="profile-image" src="{{host.avatarfull}}">
+			<p class="profile-name">{{host.personaname}}</p>
 		</div>
-		
-		<div class="games">
-			{{#each games}}
-			<div class="game">
-				<img class="cover" src="https://images.igdb.com/igdb/image/upload/t_720p/{{this.cover.image_id}}.jpg"">
-			</div>
+		<form class="friend-form" method="GET">
+			{{#each friends}}
+			<input type="hidden" name="friends[]" value="{{this.steamid}}">
 			{{/each}}
-		</div>
+			<input class="friend-input" type="input" name="friends[]" placeholder="add friends">
+			<input style="margin-left: 10px; border-radius: 50%;" type="submit" value="&#8594">
+		</form>
+		<ul class="friend-list">
+			{{#each friends}}
+			<li class="friend">
+				<img class="friend-image" src="{{this.avatarfull}}">
+				<p class="friend-name">{{this.personaname}}</p>	
+			</li>
+			{{/each}}
+		</ul>
 	</div>
-</body>
-<style type="text/css">
-
-</style>
-</html>
+	
+	<div class="games">
+		{{#each games}}
+		<div class="game">
+			<img class="cover" src="https://images.igdb.com/igdb/image/upload/t_720p/{{this.cover.image_id}}.jpg">
+		</div>
+		{{/each}}
+	</div>
+</div>
