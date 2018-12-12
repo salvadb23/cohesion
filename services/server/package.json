@@ -1,5 +1,5 @@
 {
-  "name": "steam-matcher",
+  "name": "cohesion",
   "version": "1.0.0",
   "description": "Partner project for [@MakeSchool](https://github.com/MakeSchool)'s SPD 1.2 Class",
   "main": "server.js",
@@ -10,14 +10,14 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/DacioRomero/Steam-Matcher.git"
+    "url": "git+https://github.com/DacioRomero/Cohesion.git"
   },
   "author": "",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/DacioRomero/Steam-Matcher/issues"
+    "url": "https://github.com/DacioRomero/Cohesion/issues"
   },
-  "homepage": "https://github.com/DacioRomero/Steam-Matcher#readme",
+  "homepage": "https://github.com/DacioRomero/Cohesion#readme",
   "dependencies": {
     "@igdb/apicalypse": "github:igdb/node-apicalypse",
     "array-intersection": "^0.1.2",
