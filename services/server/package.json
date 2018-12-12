@@ -20,6 +20,7 @@
   "homepage": "https://github.com/DacioRomero/Cohesion#readme",
   "dependencies": {
     "@igdb/apicalypse": "github:igdb/node-apicalypse",
+    "array-flatten": "^2.1.2",
     "array-intersection": "^0.1.2",
     "bluebird": "^3.5.3",
     "body-parser": "^1.18.3",

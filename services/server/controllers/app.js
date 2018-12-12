@@ -2,6 +2,7 @@
 const express = require('express');
 const Promise = require('bluebird');
 const intersection = require('array-intersection');
+const flatten = require('array-flatten');
 const apicalypse = require('@igdb/apicalypse').default;
 const steamWrapper = require('steam-wrapper');
 
@@ -64,7 +65,7 @@ router.get('/:host', (req, res) => {
             ]);
         })
         .then(([gameBatches, summaries]) => {
-            const games = gameBatches.map(batch => batch.data).flat()
+            const games = flatten(gameBatches.map(batch => batch.data))
             // https://stackoverflow.com/a/45898081/10336544
             const { [hostId]: host, ...friends } = summaries;
 
