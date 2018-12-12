@@ -21,10 +21,9 @@
 			</form>
 			<script type="text/javascript">
 				document.getElementById("steamform").addEventListener('submit', function(e) {
-					event.preventDefault();
+					e.preventDefault();
 					var steamId = document.getElementById("steamid").value;
 					window.location = "/app/" + steamId;
-					return false;
 				});
 			</script>
 		</div>
