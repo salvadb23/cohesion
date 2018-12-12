@@ -7,14 +7,16 @@ const steamWrapper = require('steam-wrapper');
 
 const router = express.Router();
 const Steam = steamWrapper();
-const IGDB = apicalypse({
-    baseURL: "https://endpoint-alpha.igdb.com",
-    headers: {
-        'Accept': 'application/json',
-        'user-key': process.env.IGDB_API_KEY
-    },
-    responseType: 'json'
-});
+const IGDB = () => {
+    return apicalypse({
+        baseURL: "https://endpoint-alpha.igdb.com",
+        headers: {
+            'Accept': 'application/json',
+            'user-key': process.env.IGDB_API_KEY
+        },
+        responseType: 'json'
+    });
+}
 
 router.get('/:host', (req, res) => {
     const hostId = req.params.host;
@@ -45,7 +47,7 @@ router.get('/:host', (req, res) => {
                     // external_games.uid returns incorrect results, using URLs
                     const urls = batch.map(id => `https://store.steampowered.com/app/${id}`);
 
-                    const query = IGDB
+                    const query = IGDB()
                         .fields([
                             'name',
                             'cover.image_id',
