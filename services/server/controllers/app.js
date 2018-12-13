@@ -1,12 +1,12 @@
 // controller/app.js
-const express = require('express');
 const Promise = require('bluebird');
-const intersection = require('array-intersection');
-const flatten = require('array-flatten');
+const express = require('express');
+const asyncHandler = require('express-async-handler');
 const apicalypse = require('@igdb/apicalypse').default;
 const steamWrapper = require('steam-wrapper');
+const intersection = require('array-intersection');
+const flatten = require('array-flatten');
 
-const router = express.Router();
 const Steam = steamWrapper();
 const IGDB = () => apicalypse({
   baseURL: 'https://endpoint-alpha.igdb.com',
@@ -17,8 +17,9 @@ const IGDB = () => apicalypse({
   responseType: 'json',
 });
 
-// TODO: Use async await
-router.get('/:host', (req, res) => {
+const router = express.Router();
+
+router.get('/:host', asyncHandler(async (req, res) => {
   const hostId = req.params.host;
   let friendIds = req.query.friends;
 
@@ -32,48 +33,40 @@ router.get('/:host', (req, res) => {
     steamIds.push(...friendIds);
   }
 
-  Promise.map(steamIds, steamId => Steam.GetOwnedGames(steamId))
-    .then((userGames) => {
-      const sharedGames = intersection(...userGames);
+  const userGames = await Promise.map(steamIds, steamId => Steam.GetOwnedGames(steamId));
+  const sharedGames = intersection(...userGames);
 
-      // Split into batches of 50 to comply with API limit.
-      const batches = [];
-      for (let i = 0; i < sharedGames.length; i += 50) {
-        batches.push(sharedGames.slice(i, i + 50));
-      }
+  const batches = [];
+  for (let i = 0; i < sharedGames.length; i += 50) {
+    batches.push(sharedGames.splice(i, i + 50));
+  }
 
-      return Promise.all([
-        Promise.map(batches, (batch) => {
-          // external_games.uid returns incorrect results, using URLs
-          const urls = batch.map(id => `https://store.steampowered.com/app/${id}`);
+  const [gameBatches, playerSummaries] = await Promise.all([
+    Promise.map(batches, (batch) => {
+      // external_games.uid returns incorrect results, using URLs
+      const urls = batch.map(id => `https://store.steampowered.com/app/${id}`);
 
-          const query = IGDB()
-            .fields([
-              'name',
-              'cover.image_id',
-            ])
-            .limit(50)
-            .filter([
-              'game_modes.slug = "multiplayer"',
-              `websites.url = ("${urls.join('","')}")`,
-            ]);
+      const query = IGDB()
+        .fields([
+          'name',
+          'cover.image_id',
+        ])
+        .limit(50)
+        .filter([
+          'game_modes.slug = "multiplayer"',
+          `websites.url = ("${urls.join('","')}")`,
+        ]);
 
-          return query.request('/games');
-        }),
-        Steam.GetPlayerSummaries(steamIds),
-      ]);
-    })
-    .then(([gameBatches, summaries]) => {
-      const games = flatten(gameBatches.map(batch => batch.data));
-      // https://stackoverflow.com/a/45898081/10336544
-      const { [hostId]: host, ...friends } = summaries;
+      return query.request('/games');
+    }),
+    Steam.GetPlayerSummaries(steamIds),
+  ]);
 
-      res.render('app', { host, friends, games });
-    })
-    .catch((error) => {
-      if (!res.headersSent) res.status(500).json(error.message);
-      console.error(error);
-    });
-});
+  const games = flatten(gameBatches.map(batch => batch.data));
+  // https://stackoverflow.com/a/45898081/10336544
+  const { [hostId]: host, ...friends } = playerSummaries;
+
+  res.render('app', { host, friends, games });
+}));
 
 module.exports = router;
