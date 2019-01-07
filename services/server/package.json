@@ -19,7 +19,7 @@
   },
   "homepage": "https://github.com/DacioRomero/Cohesion#readme",
   "dependencies": {
-    "@igdb/apicalypse": "github:igdb/node-apicalypse",
+    "apicalypse": "0.0.6",
     "array-flatten": "^2.1.2",
     "array-intersection": "^0.1.2",
     "bluebird": "^3.5.3",
@@ -32,9 +32,9 @@
     "steam-wrapper": "github:DacioRomero/Steam-Wrapper"
   },
   "devDependencies": {
-    "eslint": "^5.10.0",
+    "eslint": "^5.12.0",
     "eslint-config-airbnb-base": "^13.1.0",
     "eslint-plugin-import": "^2.14.0",
-    "nodemon": "^1.18.7"
+    "nodemon": "^1.18.9"
   }
 }

@@ -2,14 +2,14 @@
 const Promise = require('bluebird');
 const express = require('express');
 const asyncHandler = require('express-async-handler');
-const apicalypse = require('@igdb/apicalypse').default;
+const apicalypse = require('apicalypse').default;
 const steamWrapper = require('steam-wrapper');
 const intersection = require('array-intersection');
 const flatten = require('array-flatten');
 
 const Steam = steamWrapper();
 const IGDB = () => apicalypse({
-  baseURL: 'https://endpoint-alpha.igdb.com',
+  baseURL: 'https://api-v3.igdb.com',
   headers: {
     Accept: 'application/json',
     'user-key': process.env.IGDB_API_KEY,
@@ -52,7 +52,7 @@ router.get('/:host', asyncHandler(async (req, res) => {
           'cover.image_id',
         ])
         .limit(50)
-        .filter([
+        .where([
           'game_modes.slug = "multiplayer"',
           `websites.url = ("${urls.join('","')}")`,
         ]);
