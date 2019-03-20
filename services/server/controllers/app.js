@@ -36,9 +36,10 @@ router.get('/:host', asyncHandler(async (req, res) => {
   const userGames = await Promise.map(steamIds, steamId => Steam.GetOwnedGames(steamId));
   const sharedGames = intersection(...userGames);
 
+  const batchSize = 10;
   const batches = [];
-  for (let i = 0; i < sharedGames.length; i += 50) {
-    batches.push(sharedGames.splice(i, i + 50));
+  for (let i = 0; i < sharedGames.length; i += batchSize) {
+    batches.push(sharedGames.slice(i, i + batchSize));
   }
 
   const [gameBatches, playerSummaries] = await Promise.all([
@@ -66,7 +67,7 @@ router.get('/:host', asyncHandler(async (req, res) => {
   // https://stackoverflow.com/a/45898081/10336544
   const { [hostId]: host, ...friends } = playerSummaries;
 
-  res.render('app', { host, friends, games });
+  res.json({ host, friends, games });
 }));
 
 module.exports = router;
