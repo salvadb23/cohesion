@@ -70,7 +70,7 @@ router.get('/info', asyncHandler(async (req, res) => {
     return url.split('/').slice(-1)[0];
   });
 
-  res.json(zipObject(ids, resultIds));
+  res.json(zipObject(resultIds, gamesInfo));
 }));
 
 module.exports = router;
