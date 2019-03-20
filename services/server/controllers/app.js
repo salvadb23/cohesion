@@ -3,7 +3,6 @@ const express = require('express');
 const asyncHandler = require('express-async-handler');
 const apicalypse = require('apicalypse').default;
 const steamWrapper = require('steam-wrapper');
-const zipObject = require('lodash.zipobject');
 
 const Steam = steamWrapper();
 const IGDB = () => apicalypse({
@@ -14,6 +13,12 @@ const IGDB = () => apicalypse({
   },
   responseType: 'json',
 });
+
+function zipObject(props, values) {
+  return props.reduce((prev, cur, i) => (
+    { ...prev, [cur]: values[i] }
+  ), {});
+}
 
 const router = express.Router();
 
