@@ -4,8 +4,7 @@ const express = require('express');
 const asyncHandler = require('express-async-handler');
 const apicalypse = require('apicalypse').default;
 const steamWrapper = require('steam-wrapper');
-const intersection = require('array-intersection');
-const flatten = require('array-flatten');
+const zipObject = require('lodash.zipobject');
 
 const Steam = steamWrapper();
 const IGDB = () => apicalypse({
@@ -19,55 +18,59 @@ const IGDB = () => apicalypse({
 
 const router = express.Router();
 
-router.get('/:host', asyncHandler(async (req, res) => {
-  const hostId = req.params.host;
-  let friendIds = req.query.friends;
+router.get('/library', asyncHandler(async (req, res) => {
+  let { steamIds } = req.query;
 
-  const steamIds = [hostId];
-
-  if (friendIds != null) {
-    if (typeof friendIds === 'string' || friendIds instanceof String) {
-      friendIds = friendIds.split(',');
-    }
-
-    steamIds.push(...friendIds);
+  if (typeof steamIds === 'string' || steamIds instanceof String) {
+    steamIds = steamIds.split(',');
   }
 
-  const userGames = await Promise.map(steamIds, steamId => Steam.GetOwnedGames(steamId));
-  const sharedGames = intersection(...userGames);
+  const libraries = await Promise.map(steamIds, steamId => Steam.GetOwnedGames(steamId));
+
+  res.json(zipObject(steamIds, libraries));
+}));
+
+router.get('/info', asyncHandler(async (req, res) => {
+  let { appIds } = req.query;
+
+  if (typeof appIds === 'string' || appIds instanceof String) {
+    appIds = appIds.split(',');
+  }
 
   const batchSize = 10;
   const batches = [];
-  for (let i = 0; i < sharedGames.length; i += batchSize) {
-    batches.push(sharedGames.slice(i, i + batchSize));
+  for (let i = 0; i < appIds.length; i += batchSize) {
+    batches.push(appIds.slice(i, i + batchSize));
   }
 
-  const [gameBatches, playerSummaries] = await Promise.all([
-    Promise.map(batches, (batch) => {
-      // external_games.uid returns incorrect results, using URLs
-      const urls = batch.map(id => `https://store.steampowered.com/app/${id}`);
+  const gameBatches = await Promise.map(batches, (batch) => {
+    const urls = batch.map(id => `https://store.steampowered.com/app/${id}`);
 
-      const query = IGDB()
-        .fields([
-          'name',
-          'cover.image_id',
-        ])
-        .limit(50)
-        .where([
-          'game_modes.slug = "multiplayer"',
-          `websites.url = ("${urls.join('","')}")`,
-        ]);
+    const query = IGDB()
+      .fields([
+        'name',
+        'game_modes.name',
+        'game_engines.name',
+        'themes.name',
+        'keywords.name',
+        'platforms.abbreviation',
+        'cover.image_id',
+        'genres.name',
+        'websites.url',
+      ])
+      .limit(batchSize)
+      .where(`websites.url = ("${urls.join('","')}")`);
 
-      return query.request('/games');
-    }),
-    Steam.GetPlayerSummaries(steamIds),
-  ]);
+    return query.request('/games');
+  });
 
-  const games = flatten(gameBatches.map(batch => batch.data));
-  // https://stackoverflow.com/a/45898081/10336544
-  const { [hostId]: host, ...friends } = playerSummaries;
+  const gamesInfo = gameBatches.map(batch => batch.data).flat();
+  const ids = gamesInfo.map((gameInfo) => {
+    const { url } = gameInfo.websites.filter(site => site.url.startsWith('https://store.steampowered.com/app/'))[0];
+    return url.split('/').slice(-1)[0];
+  });
 
-  res.json({ host, friends, games });
+  res.json(zipObject(ids, gamesInfo));
 }));
 
 module.exports = router;
