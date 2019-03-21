@@ -93,12 +93,18 @@ router.get('/info', asyncHandler(async (req, res) => {
   res.json({ ...defaults, ...zipObject(resultIds, gamesInfo) });
 }));
 
+const indexArrById = arr => arr.reduce((prev, cur) => {
+  const { id, ...item } = cur;
+  return { ...prev, [id]: item };
+}, {});
+
 router.get('/dicts', asyncHandler(async (req, res) => {
   const [themes, genres, playerPerspectives, platforms] = await Promise.all([
     IGDB()
       .fields('*')
       .request('/themes')
-      .then(extrResData),
+      .then(extrResData)
+      .then(indexArrById),
     IGDB()
       .fields('*')
       .request('/genres')
@@ -106,16 +112,19 @@ router.get('/dicts', asyncHandler(async (req, res) => {
     IGDB()
       .fields('*')
       .request('/player_perspectives')
-      .then(extrResData),
+      .then(extrResData)
+      .then(indexArrById),
     IGDB()
       .fields('*')
       .where('id=(3,6,14)')
       .request('/platforms')
-      .then(extrResData),
+      .then(extrResData)
+      .then(indexArrById),
     IGDB()
       .fields('*')
       .request('/game_modes')
-      .then(extrResData),
+      .then(extrResData)
+      .then(indexArrById),
   ]);
 
   res.json({
