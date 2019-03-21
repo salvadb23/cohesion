@@ -23,7 +23,7 @@ const zipObject = (props, values) => props.reduce((prev, cur, i) => (
 
 const router = express.Router();
 
-router.get('/player', asyncHandler(async (req, res) => {
+router.get('/profiles', asyncHandler(async (req, res) => {
   let { steamIds: ids } = req.query;
 
   if (typeof ids === 'string' || ids instanceof String) {
@@ -46,7 +46,7 @@ router.get('/player', asyncHandler(async (req, res) => {
   res.json(profiles);
 }));
 
-router.get('/info', asyncHandler(async (req, res) => {
+router.get('/details', asyncHandler(async (req, res) => {
   let { appIds: ids } = req.query;
 
   if (typeof ids === 'string' || ids instanceof String) {
@@ -98,30 +98,31 @@ const indexArrById = arr => arr.reduce((prev, cur) => {
   return { ...prev, [id]: item };
 }, {});
 
-router.get('/dicts', asyncHandler(async (req, res) => {
+router.get('/glossaries', asyncHandler(async (req, res) => {
   const [themes, genres, playerPerspectives, platforms] = await Promise.all([
     IGDB()
-      .fields('*')
+      .fields('name')
       .request('/themes')
       .then(extrResData)
       .then(indexArrById),
     IGDB()
-      .fields('*')
+      .fields('name')
       .request('/genres')
-      .then(extrResData),
+      .then(extrResData)
+      .then(indexArrById),
     IGDB()
-      .fields('*')
+      .fields('name')
       .request('/player_perspectives')
       .then(extrResData)
       .then(indexArrById),
     IGDB()
-      .fields('*')
+      .fields('name')
       .where('id=(3,6,14)')
       .request('/platforms')
       .then(extrResData)
       .then(indexArrById),
     IGDB()
-      .fields('*')
+      .fields('name')
       .request('/game_modes')
       .then(extrResData)
       .then(indexArrById),
