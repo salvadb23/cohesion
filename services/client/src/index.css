@@ -12,3 +12,14 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
     monospace;
 }
+
+.HeroImage {
+  width: 100%;
+  background-image: url(hero-color.jpg);
+  background-size: cover;
+  background-position: bottom center; 
+}
+
+
+
+
