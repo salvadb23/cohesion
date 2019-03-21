@@ -14,6 +14,7 @@ const IGDB = () => apicalypse({
   responseType: 'json',
 });
 
+// Apicalypse resolves with the res object, use as Promise resolve callback
 const extrResData = res => res.data;
 
 // Meant to behave like https://lodash.com/docs#zipObject
@@ -23,6 +24,7 @@ const zipObject = (props, values) => props.reduce((prev, cur, i) => (
 
 const router = express.Router();
 
+// For getting player info and libraries.
 router.get('/profiles', asyncHandler(async (req, res) => {
   let { steamIds: ids } = req.query;
 
@@ -46,6 +48,7 @@ router.get('/profiles', asyncHandler(async (req, res) => {
   res.json(profiles);
 }));
 
+// For getting detailss
 router.get('/details', asyncHandler(async (req, res) => {
   let { appIds: ids } = req.query;
 
@@ -53,6 +56,7 @@ router.get('/details', asyncHandler(async (req, res) => {
     ids = ids.split(',');
   }
 
+  // IGDB free tier limited to 10, circumevents issue
   const batchSize = 10;
   const batches = [];
   for (let i = 0; i < ids.length; i += batchSize) {
@@ -60,6 +64,7 @@ router.get('/details', asyncHandler(async (req, res) => {
   }
 
   let gamesInfo = await Promise.all(batches.map((batch) => {
+    // IGDB free tier doesn't include external_games field
     const urls = batch.map(id => `https://store.steampowered.com/app/${id}`);
 
     return IGDB()
@@ -79,13 +84,16 @@ router.get('/details', asyncHandler(async (req, res) => {
       .then(extrResData);
   }));
 
+  // ES2019 feature - Node v11.12+
   gamesInfo = gamesInfo.flat();
 
+  // Highly likely that not every game is on IGDB with its Steam URL, need to extract ids from urls
   const resultIds = gamesInfo.map((info) => {
     const { url } = info.websites.filter(site => site.url.startsWith('https://store.steampowered.com/app/'))[0];
     return url.split('/').slice(-1)[0];
   });
 
+  // Those that aren't found should default to null for client use.
   const defaults = ids.reduce((prev, id) => (
     { ...prev, [id]: null }
   ), {});
@@ -93,11 +101,13 @@ router.get('/details', asyncHandler(async (req, res) => {
   res.json({ ...defaults, ...zipObject(resultIds, gamesInfo) });
 }));
 
+// Index IGDB results by id for easier use in client
 const indexArrById = arr => arr.reduce((prev, cur) => {
   const { id, ...item } = cur;
   return { ...prev, [id]: item };
 }, {});
 
+// For mapping id results from /details to names
 router.get('/glossaries', asyncHandler(async (req, res) => {
   const [themes, genres, playerPerspectives, platforms] = await Promise.all([
     IGDB()
