@@ -14,6 +14,7 @@ const IGDB = () => apicalypse({
   responseType: 'json',
 });
 
+// Meant to behave like https://lodash.com/docs#zipObject
 function zipObject(props, values) {
   return props.reduce((prev, cur, i) => (
     { ...prev, [cur]: values[i] }
@@ -22,16 +23,29 @@ function zipObject(props, values) {
 
 const router = express.Router();
 
-router.get('/library', asyncHandler(async (req, res) => {
+router.get('/player', asyncHandler(async (req, res) => {
   let { steamIds: ids } = req.query;
 
   if (typeof ids === 'string' || ids instanceof String) {
     ids = ids.split(',');
   }
 
-  const libraries = await Promise.all(ids.map(id => Steam.GetOwnedGames(id)));
+  const [libraries, profiles] = await Promise.all([
+    Promise.all(ids.map(id => Steam.GetOwnedGames(id).catch(() => undefined))),
+    Steam.GetPlayerSummaries(ids).catch(() => null),
+  ]);
 
-  res.json(zipObject(ids, libraries));
+  const fullProfiles = libraries.reduce((prev, games, i) => (
+    {
+      ...prev,
+      [ids[i]]: {
+        ...profiles[ids[i]],
+        games,
+      },
+    }
+  ), {});
+
+  res.json(fullProfiles);
 }));
 
 router.get('/info', asyncHandler(async (req, res) => {
@@ -75,7 +89,11 @@ router.get('/info', asyncHandler(async (req, res) => {
     return url.split('/').slice(-1)[0];
   });
 
-  res.json(zipObject(resultIds, gamesInfo));
+  const defaults = ids.reduce((prev, id) => (
+    { ...prev, [id]: null }
+  ), {});
+
+  res.json({ ...defaults, ...zipObject(resultIds, gamesInfo) });
 }));
 
 module.exports = router;
