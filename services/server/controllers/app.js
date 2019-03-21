@@ -14,12 +14,12 @@ const IGDB = () => apicalypse({
   responseType: 'json',
 });
 
+const extrResData = res => res.data;
+
 // Meant to behave like https://lodash.com/docs#zipObject
-function zipObject(props, values) {
-  return props.reduce((prev, cur, i) => (
-    { ...prev, [cur]: values[i] }
-  ), {});
-}
+const zipObject = (props, values) => props.reduce((prev, cur, i) => (
+  { ...prev, [cur]: values[i] }
+), {});
 
 const router = express.Router();
 
@@ -30,22 +30,20 @@ router.get('/player', asyncHandler(async (req, res) => {
     ids = ids.split(',');
   }
 
-  const [libraries, profiles] = await Promise.all([
-    Promise.all(ids.map(id => Steam.GetOwnedGames(id).catch(() => undefined))),
-    Steam.GetPlayerSummaries(ids).catch(() => null),
+  let [libraries, profiles] = await Promise.all([
+    Promise.all(ids.map(id => Steam.GetOwnedGames(id))),
+    Steam.GetPlayerSummaries(...ids),
   ]);
 
-  const fullProfiles = libraries.reduce((prev, games, i) => (
-    {
-      ...prev,
-      [ids[i]]: {
-        ...profiles[ids[i]],
-        games,
-      },
-    }
+  libraries = libraries.reduce((prev, games, i) => (
+    { ...prev, [ids[i]]: games }
   ), {});
 
-  res.json(fullProfiles);
+  profiles = Object.keys(profiles).reduce((prev, id) => (
+    { ...prev, [id]: { ...profiles[id], games: libraries[id] } }
+  ), {});
+
+  res.json(profiles);
 }));
 
 router.get('/info', asyncHandler(async (req, res) => {
@@ -64,25 +62,24 @@ router.get('/info', asyncHandler(async (req, res) => {
   let gamesInfo = await Promise.all(batches.map((batch) => {
     const urls = batch.map(id => `https://store.steampowered.com/app/${id}`);
 
-    const query = IGDB()
+    return IGDB()
       .fields([
         'name',
-        'game_modes.name',
-        'game_engines.name',
-        'themes.name',
-        'keywords.name',
-        'platforms.abbreviation',
         'cover.image_id',
-        'genres.name',
         'websites.url',
+        'themes',
+        'genres',
+        'player_perspectives',
+        'platforms',
+        'game_modes',
       ])
       .limit(batchSize)
-      .where(`websites.url=("${urls.join('","')}")`);
-
-    return query.request('/games');
+      .where(`websites.url=("${urls.join('","')}")`)
+      .request('/games')
+      .then(extrResData);
   }));
 
-  gamesInfo = gamesInfo.map(batch => batch.data).flat();
+  gamesInfo = gamesInfo.flat();
 
   const resultIds = gamesInfo.map((info) => {
     const { url } = info.websites.filter(site => site.url.startsWith('https://store.steampowered.com/app/'))[0];
@@ -94,6 +91,39 @@ router.get('/info', asyncHandler(async (req, res) => {
   ), {});
 
   res.json({ ...defaults, ...zipObject(resultIds, gamesInfo) });
+}));
+
+router.get('/dicts', asyncHandler(async (req, res) => {
+  const [themes, genres, playerPerspectives, platforms] = await Promise.all([
+    IGDB()
+      .fields('*')
+      .request('/themes')
+      .then(extrResData),
+    IGDB()
+      .fields('*')
+      .request('/genres')
+      .then(extrResData),
+    IGDB()
+      .fields('*')
+      .request('/player_perspectives')
+      .then(extrResData),
+    IGDB()
+      .fields('*')
+      .where('id=(3,6,14)')
+      .request('/platforms')
+      .then(extrResData),
+    IGDB()
+      .fields('*')
+      .request('/game_modes')
+      .then(extrResData),
+  ]);
+
+  res.json({
+    themes,
+    genres,
+    playerPerspectives,
+    platforms,
+  });
 }));
 
 module.exports = router;
