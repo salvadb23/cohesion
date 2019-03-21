@@ -1,0 +1,9 @@
+# Directories
+node_modules
+build
+
+# Files
+README.md
+.gitignore
+.env*
+src/setupProxy.js
