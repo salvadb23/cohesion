@@ -5,10 +5,12 @@
   "dependencies": {
     "axios": "^0.18.0",
     "bloomer": "^0.6.5",
+    "prop-types": "^15.7.2",
     "qs": "^6.6.0",
     "react": "^16.8.4",
     "react-bulma-components": "^2.3.0",
     "react-dom": "^16.8.4",
+    "react-helpers": "https://gitlab.com/dacio/react-helpers.git",
     "react-scripts": "2.1.8",
     "styled-components": "^4.1.3"
   },
