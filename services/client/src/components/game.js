@@ -1,11 +1,16 @@
 import React, { Component } from 'react'
-import { Media, MediaLeft, Image, Content, Level, LevelLeft, LevelItem, Icon, MediaContent, MediaRight, Delete } from 'bloomer'
+import { Media, MediaLeft, Image, Content, Level, LevelLeft, LevelItem, Icon, MediaContent } from 'bloomer'
 
 const game = {
     boxShadow: '0 2px 3px rgba(10, 10, 10, 0.1), 0 0 0 1px rgba(10, 10, 10, 0.1)',
-    paddingBottom: '30px',
+    paddingBottom: '60px',
     paddingTop: '20px',
+    margin: 'auto',
+    marginBottom: '10px',
     paddingLeft: '20px',
+    width: '95%',
+    backgroundColor: 'white'
+
 }
 
 class Game extends Component {
@@ -18,28 +23,15 @@ class Game extends Component {
                 <MediaContent>
                     <Content>
                         <p>
-                            <strong>Assassins Creed</strong> 
+                            <strong>Assassinss Creed</strong> 
                             <br />
                             Multi-Player
                             <br />
-                            Release Date: November 19, 2013
+                            <strong>Release Date:</strong> November 19, 2013
                             <br />
-                            Tags: Adventure, Thriller
+                            <strong>Tags:</strong> Adventure, Thriller
                         </p>
                     </Content>
-                    <Level isMobile>
-                        <LevelLeft>
-                            <LevelItem href='#'>
-                                <Icon isSize='small'><span className="fa fa-reply" aria-hidden="true" /></Icon>
-                            </LevelItem>
-                            <LevelItem href='#'>
-                                <Icon isSize='small'><span className="fa fa-retweet" aria-hidden="true" /></Icon>
-                            </LevelItem>
-                            <LevelItem href='#'>
-                                <Icon isSize='small'><span className="fa fa-heart" aria-hidden="true" /></Icon>
-                            </LevelItem>
-                        </LevelLeft>
-                    </Level>
                 </MediaContent>
             </Media>
         )
