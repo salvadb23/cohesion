@@ -1,6 +1,10 @@
 // controller/app.js
 const express = require('express');
 const asyncHandler = require('express-async-handler');
+const zipObject = require('lodash/zipObject');
+const keyBy = require('lodash/keyBy');
+const merge = require('lodash/merge');
+const zip = require('lodash/zip');
 const apicalypse = require('apicalypse').default;
 const steamWrapper = require('steam-wrapper');
 
@@ -17,11 +21,6 @@ const IGDB = () => apicalypse({
 // Apicalypse resolves with the res object, use as Promise resolve callback
 const extrResData = res => res.data;
 
-// Meant to behave like https://lodash.com/docs#zipObject
-const zipObject = (props, values) => props.reduce((prev, cur, i) => (
-  { ...prev, [cur]: values[i] }
-), {});
-
 const router = express.Router();
 
 // Gets player info and game libraries.
@@ -32,18 +31,16 @@ router.get('/players', asyncHandler(async (req, res) => {
     ids = ids.split(',');
   }
 
-  let [libraries, profiles] = await Promise.all([
+  const [libraries, profiles] = await Promise.all([
     Promise.all(ids.map(id => Steam.GetOwnedGames(id))),
     Steam.GetPlayerSummaries(...ids),
   ]);
 
-  libraries = libraries.reduce((prev, games, i) => (
-    { ...prev, [ids[i]]: games }
-  ), {});
+  // merge(profiles, libraries.reduce((prev, games, i) => (
+  //   { ...prev, [ids[i]]: { games } }
+  // ), {}));
 
-  profiles = Object.keys(profiles).reduce((prev, id) => (
-    { ...prev, [id]: { ...profiles[id], games: libraries[id] } }
-  ), {});
+  merge(profiles, zipObject(ids, libraries.map(games => ({ games }))));
 
   res.json(profiles);
 }));
@@ -102,10 +99,7 @@ router.get('/games', asyncHandler(async (req, res) => {
 }));
 
 // Index IGDB results by id for easier use in client
-const indexArrById = arr => arr.reduce((prev, cur) => {
-  const { id, ...item } = cur;
-  return { ...prev, [id]: item };
-}, {});
+const keyArrById = arr => keyBy(arr, 'id');
 
 // For mapping id results from /details to names
 router.get('/glossaries', asyncHandler(async (req, res) => {
@@ -114,28 +108,28 @@ router.get('/glossaries', asyncHandler(async (req, res) => {
       .fields('name')
       .request('/themes')
       .then(extrResData)
-      .then(indexArrById),
+      .then(keyArrById),
     IGDB()
       .fields('name')
       .request('/genres')
       .then(extrResData)
-      .then(indexArrById),
+      .then(keyArrById),
     IGDB()
       .fields('name')
       .request('/player_perspectives')
       .then(extrResData)
-      .then(indexArrById),
+      .then(keyArrById),
     IGDB()
       .fields('name')
       .where('id=(3,6,14)')
       .request('/platforms')
       .then(extrResData)
-      .then(indexArrById),
+      .then(keyArrById),
     IGDB()
       .fields('name')
       .request('/game_modes')
       .then(extrResData)
-      .then(indexArrById),
+      .then(keyArrById),
   ]);
 
   res.json({
