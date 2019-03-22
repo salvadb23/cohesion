@@ -8,7 +8,6 @@ const ProfileContainer = styled.div`
     grid-area: p;
 `
 const padding = {
-    padding: '0px 60px 0px 60px',
     textAlign: 'center',
     marginRight: '10px',
 }
