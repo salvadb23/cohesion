@@ -84,16 +84,16 @@ class Dashboard extends Component {
     genFilterList = () => {
         let { filters } = this.state;
 
-        filters = Object.entries(filters)
-            .reduce((prev, [category, catFilters]) => {
-                // Get the ids of the category whose value is truthy
-                const truthies = Object.keys(catFilters)
-                    .filter(id => catFilters[id]);
-
-                return { ...prev, [category]: truthies }
-            }, {})
-
-        return filters;
+        return Object.assign(
+            {},
+            ...Object.entries(filters).map(([cat, catFilters]) => (
+                {
+                    [cat]: Object.entries(catFilters)
+                        .filter(([, catFilter]) => catFilter) // If filter is enabled
+                        .map(([id, ]) => id) // Keep only id
+                }
+            ))
+        )
     }
 
     render(){
