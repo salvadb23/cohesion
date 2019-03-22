@@ -1,9 +1,6 @@
 import axios from 'axios';
 import qs from 'qs';
-// import flip from 'lodash/flip';
-// import wrap from 'lodash/wrap';
 
-// const paramsSerializer = wrap({ indices: false }, flip(qs.stringify));
 const paramsSerializer = (params) => qs.stringify(params, { indices: false })
 
 const resToData = res => res.data;
