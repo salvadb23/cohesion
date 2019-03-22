@@ -24,8 +24,8 @@ const zipObject = (props, values) => props.reduce((prev, cur, i) => (
 
 const router = express.Router();
 
-// For getting player info and libraries.
-router.get('/profiles', asyncHandler(async (req, res) => {
+// Gets player info and game libraries.
+router.get('/players', asyncHandler(async (req, res) => {
   let { steamIds: ids } = req.query;
 
   if (typeof ids === 'string' || ids instanceof String) {
@@ -48,8 +48,8 @@ router.get('/profiles', asyncHandler(async (req, res) => {
   res.json(profiles);
 }));
 
-// For getting detailss
-router.get('/details', asyncHandler(async (req, res) => {
+// Gets game details
+router.get('/games', asyncHandler(async (req, res) => {
   let { appIds: ids } = req.query;
 
   if (typeof ids === 'string' || ids instanceof String) {
