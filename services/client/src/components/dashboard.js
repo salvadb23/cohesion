@@ -47,15 +47,18 @@ class Dashboard extends Component {
         const glossaries = await api.getGlossaries();
 
         // Generate default filters as false.
-        const filters = Object.entries(glossaries)
-            .reduce((prev, [glossName, gloss]) => {
-                const defaults = Object.keys(gloss)
-                    .reduce((prev, id) => (
-                        { ...prev, [id]: false }
-                    ), {});
-
-                return { ...prev, [glossName]: defaults };
-            }, {});
+        const filters = Object.assign(
+            {},
+            ...Object.entries(glossaries)
+            .map(([glossName, gloss]) => (
+                {
+                    [glossName]: Object.assign(
+                        {},
+                        ...Object.keys(gloss).map(id => ({ [id]: false }))
+                    )
+                }
+            ), {})
+        );
 
         this.setState({ glossaries, filters });
     }
