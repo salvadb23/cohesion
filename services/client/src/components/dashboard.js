@@ -1,10 +1,13 @@
 import React, { Component } from 'react'
 import styled from 'styled-components'
-import Game from './game'
+import intersection from 'lodash/intersection';
+import omit from 'lodash/omit';
+// import Game from './game'
 import ProfileList from './ProfileContainer'
+import GameContainer from './GameContainer';
 
 import * as api from '../api';
-import objRemKeys from '../utils/objRemKeys';
+// import objRemKeys from '../utils/objRemKeys';
 
 const Wrapper = styled.div`
     width: 85vw;
@@ -20,18 +23,18 @@ const Wrapper = styled.div`
 
 `
 
-console.log('Hello?')
-console.dir(ProfileList);
+// console.log('Hello?')
+// console.dir(ProfileList);
 
 // const ProfileContainer = styled.div`
 //     padding-top: 40px;
 //     grid-area: p;
 // `
-const GameContainer = styled.div`
-    padding-top: 39px;
-    grid-area: g;
-    overflow: auto;
-`
+// const GameContainer = styled.div`
+//     padding-top: 39px;
+//     grid-area: g;
+//     overflow: auto;
+// `
 
 class Dashboard extends Component {
     state = {
@@ -43,47 +46,46 @@ class Dashboard extends Component {
     async componentDidMount() {
         const glossaries = await api.getGlossaries();
 
-        const filters = Object.keys(glossaries)
-            .reduce((prev, glossName) => {
-                const defaults = Object.keys(glossaries[glossName])
+        // Generate default filters as false.
+        const filters = Object.entries(glossaries)
+            .reduce((prev, [glossName, gloss]) => {
+                const defaults = Object.keys(gloss)
                     .reduce((prev, id) => (
                         { ...prev, [id]: false }
                     ), {});
 
                 return { ...prev, [glossName]: defaults };
-            }, {})
+            }, {});
 
         this.setState({ glossaries, filters });
     }
 
-    async addPlayers(...ids) {
+    addPlayers = async (...ids) => {
         const newPlayers = await api.getPlayers(...ids);
         const { players: oldPlayers } = this.state;
 
         this.setState({ players: { ...oldPlayers, ...newPlayers }});
     }
 
-    removePlayers(...ids) {
+    removePlayers = (...ids) => {
         const players = this.state;
 
-        this.setState({ players: objRemKeys(players, ids) });
+        this.setState({ players: omit(players, ids) });
     }
 
-    toggleFilter(category, id) {
+    toggleFilter = (category, id) => {
         const { filters } = this.state;
         const { [category]: catFilters } = filters;
         const { [id]: val } = catFilters;
 
-        this.setState({ filters: { ...filters, [category]: { ...catFilters, [id]: !val } } })
+        this.setState({ filters: { ...filters, [category]: { ...catFilters, [id]: !val } } });
     }
 
-    genFilterList() {
+    genFilterList = () => {
         let { filters } = this.state;
 
-        filters = Object.keys(filters)
-            .reduce((prev, category) => {
-                const { [category]: catFilters } = filters;
-
+        filters = Object.entries(filters)
+            .reduce((prev, [category, catFilters]) => {
                 // Get the ids of the category whose value is truthy
                 const truthies = Object.keys(catFilters)
                     .filter(id => catFilters[id]);
@@ -95,28 +97,15 @@ class Dashboard extends Component {
     }
 
     render(){
+        const { players } = this.state;
+        const { addPlayers, removePlayers } = this;
+
+        const sharedGames = intersection(...Object.values(players).map(p => p.games));
+
         return(
         <Wrapper>
-            <ProfileList />
-            <GameContainer>
-                <Game />
-                <Game />
-                <Game />
-                <Game />
-                <Game />
-                <Game />
-                <Game />
-                <Game />
-                <Game />
-                <Game />
-                <Game />
-                <Game />
-                <Game />
-                <Game />
-                <Game />
-                <Game />
-                <Game />
-            </GameContainer>
+            <ProfileList {...{ players, addPlayers, removePlayers }}  />
+            <GameContainer games={sharedGames} />
         </Wrapper>
         )
     }
