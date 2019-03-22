@@ -4,7 +4,6 @@ const asyncHandler = require('express-async-handler');
 const zipObject = require('lodash/zipObject');
 const keyBy = require('lodash/keyBy');
 const merge = require('lodash/merge');
-const zip = require('lodash/zip');
 const apicalypse = require('apicalypse').default;
 const steamWrapper = require('steam-wrapper');
 
@@ -36,10 +35,6 @@ router.get('/players', asyncHandler(async (req, res) => {
     Steam.GetPlayerSummaries(...ids),
   ]);
 
-  // merge(profiles, libraries.reduce((prev, games, i) => (
-  //   { ...prev, [ids[i]]: { games } }
-  // ), {}));
-
   merge(profiles, zipObject(ids, libraries.map(games => ({ games }))));
 
   res.json(profiles);
@@ -60,7 +55,7 @@ router.get('/games', asyncHandler(async (req, res) => {
     batches.push(ids.slice(i, i + batchSize));
   }
 
-  let gamesInfo = await Promise.all(batches.map((batch) => {
+  const gamesInfo = (await Promise.all(batches.map((batch) => {
     // IGDB free tier doesn't include external_games field
     const urls = batch.map(id => `https://store.steampowered.com/app/${id}`);
 
@@ -79,10 +74,7 @@ router.get('/games', asyncHandler(async (req, res) => {
       .where(`websites.url=("${urls.join('","')}")`)
       .request('/games')
       .then(extrResData);
-  }));
-
-  // ES2019 feature - Node v11.12+
-  gamesInfo = gamesInfo.flat();
+  }))).flat();
 
   // Highly likely that not every game is on IGDB with its Steam URL, need to extract ids from urls
   const resultIds = gamesInfo.map((info) => {
@@ -91,9 +83,7 @@ router.get('/games', asyncHandler(async (req, res) => {
   });
 
   // Those that aren't found should default to null for client use.
-  const defaults = ids.reduce((prev, id) => (
-    { ...prev, [id]: null }
-  ), {});
+  const defaults = Object.assign({}, ...ids.map(id => ({ [id]: null })));
 
   res.json({ ...defaults, ...zipObject(resultIds, gamesInfo) });
 }));
