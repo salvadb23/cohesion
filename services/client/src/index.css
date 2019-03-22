@@ -6,6 +6,7 @@ body {
     sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  background-color: hsl(217, 71%, 53%)	;
 }
 
 code {
@@ -13,12 +14,21 @@ code {
     monospace;
 }
 
-.HeroImage {
-  width: 100%;
-  background-image: url(hero-color.jpg);
-  background-size: cover;
-  background-position: bottom center;
+.Card {
+  padding-left:20%;
+  padding-right: 20%;
+  width: fit-content;
+  height: fit-content;
+  margin: auto;
+  margin-bottom: 15px;
 }
+
+@media only screen and (max-width: 400px) {
+  .Card {
+    font-size: 10px;
+  }
+}
+
 
 
 

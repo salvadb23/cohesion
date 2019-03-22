@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import styled from 'styled-components'
-import Cards from './card'
 import Game from './game'
+import ProfileList from './ProfileContainer'
 
 import * as api from '../api';
 import objRemKeys from '../utils/objRemKeys';
@@ -12,16 +12,25 @@ const Wrapper = styled.div`
     margin: auto;
     display: grid;
     grid-template-columns: 3fr 5fr;
-    grid-template-areas: "p g"
+    grid-template-areas: "p g";
+
+    @media only screen and (max-width: 1000px) {
+        display: block;
+      }
+
 `
 
-const ProfileContainer = styled.div`
-    padding-top: 40px;
-    grid-area: p;
-`
+console.log('Hello?')
+console.dir(ProfileList);
+
+// const ProfileContainer = styled.div`
+//     padding-top: 40px;
+//     grid-area: p;
+// `
 const GameContainer = styled.div`
     padding-top: 39px;
     grid-area: g;
+    overflow: auto;
 `
 
 class Dashboard extends Component {
@@ -70,12 +79,8 @@ class Dashboard extends Component {
 
     render(){
         return(
-
         <Wrapper>
-            <ProfileContainer>
-                <Cards />
-                <Cards />
-            </ProfileContainer>
+            <ProfileList />
             <GameContainer>
                 <Game />
                 <Game />
