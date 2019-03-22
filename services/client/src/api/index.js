@@ -6,7 +6,7 @@ const paramsSerializer = qs.stringify;
 const resToData = res => res.data;
 
 export function getPlayers(...steamIds) {
-  return axios.get('/api/profiles', {
+  return axios.get('/api/players', {
     params: { steamIds },
     paramsSerializer,
   })
@@ -14,7 +14,7 @@ export function getPlayers(...steamIds) {
 }
 
 export function getGames(...appIds) {
-  return axios.get('/api/details', {
+  return axios.get('/api/games', {
     params: { appIds },
     paramsSerializer,
   })
