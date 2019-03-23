@@ -1,7 +1,7 @@
 import axios from 'axios';
 import qs from 'qs';
 
-const paramsSerializer = (params) => qs.stringify(params, { indices: false })
+const paramsSerializer = params => qs.stringify(params, { indices: false });
 
 const resToData = res => res.data;
 
