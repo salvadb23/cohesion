@@ -1,10 +1,11 @@
 import React from 'react'
-import { Card, CardContent, Media, MediaLeft, Image, Title, MediaContent, Content } from 'bloomer'
+import { Card, CardContent, Media, MediaLeft, Image, Title, MediaContent, Content, Subtitle } from 'bloomer'
+import Moment from 'react-moment';
 
 const size = {
     paddingLeft:'calc(10px + 2vw)',
     paddingRight: 'calc(10px + 2vw)',
-    width: 'max-content',
+    width: '80%',
     height: 'max-content',
     margin: 'auto',
     marginBottom: '15px',
@@ -12,25 +13,28 @@ const size = {
 }
 
 const padding = {
-    paddingTop: '6px'
+    paddingLeft: '15px', 
 }
+
+
 
 export default function Cards(props) {
         return(
             <Card style={ size }>
                 <CardContent>
-                    <Media>
+                    <Media style={ padding }>
                         <MediaLeft>
-                            <Image isSize='48x48' src='http://37.media.tumblr.com/c8651ba47fbb15f295988bdce5983bf5/tumblr_n6pwxyx3jF1ssjt3yo4_r1_250.png' />
+                            <Image isSize='48x48' src={ props.avatar} />
                         </MediaLeft>
                         <MediaContent>
-                            <Title style={ padding } isSize={4}>asjdhfaksdhfa</Title>
+                            <Title isSize={4}>{ props.name }</Title>
+                            <Subtitle isSize={6}>@{ props.alias }</Subtitle>
                         </MediaContent>
                     </Media>
                     <Content>
-                        <strong>Wahhhhhhhhhhhhh</strong>
+                        <strong>Total Games: </strong>{props.games}
                         <br/>
-                        <small>20 March 2019</small>
+                        <strong>Last Online: </strong><Moment fromNow><Moment unix>{props.lastonline}</Moment></Moment>
                     </Content>
                 </CardContent>
             </Card>

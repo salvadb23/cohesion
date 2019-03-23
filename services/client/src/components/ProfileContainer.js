@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import Cards from './card'
-import { Field, Input, Button } from 'bloomer'
+import { Field, Input} from 'bloomer'
 import styled from 'styled-components';
 import PropTypes from 'prop-types';
 import { handleInputChange } from 'react-helpers';
@@ -35,15 +35,21 @@ class ProfileList extends Component{
         }
     }
 
+    renderPlayers = () => {
+        const { players } = this.props;
+        return Object.values(players).map((player) => (
+                <Cards name={ player.realname } avatar={ player.avatarmedium } alias={ player.personaname } 
+                games={ player.games.length } lastonline={player.lastlogoff}/>
+        ))
+    }
+
     render(){
         const { player } = this.state;
 
+        
         return(
             <ProfileContainer>
-                <Cards />
-                <Cards />
-                <Cards />
-                <Cards />
+                { this.renderPlayers() }
                     <InputContainer>
                         <Field isGrouped>
                             <Input

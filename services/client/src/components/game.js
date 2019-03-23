@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { Media, MediaLeft, Image, Content, Level, LevelLeft, LevelItem, Icon, MediaContent } from 'bloomer'
+import { Media, MediaLeft, Image, Content, MediaContent } from 'bloomer'
 
 const game = {
     boxShadow: '0 2px 3px rgba(10, 10, 10, 0.1), 0 0 0 1px rgba(10, 10, 10, 0.1)',
