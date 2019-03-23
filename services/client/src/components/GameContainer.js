@@ -4,7 +4,7 @@ import styled from 'styled-components'
 import PropTypes from 'prop-types';
 import difference from 'lodash/difference';
 import omit from 'lodash/omit';
-import merge from 'lodash/fp/merge'; // Using fp version for immutability
+import pick from 'lodash/pick';
 import * as api from '../api';
 
 const GameContainer = styled.div`
@@ -27,23 +27,23 @@ class GameList extends Component {
             const removed = difference(oldGames, curGames);
 
             if (removed.length) {
-                console.log('removed');
-                console.log(removed);
-
-                this.setState({ games: omit(this.state.games, removed) })
+                this.setState(state => (
+                    { games: omit(state.games, removed )}
+                ));
             }
 
             if (added.length) {
-                console.log('added');
-                console.log(added);
-
                 const defaults = Object.assign(...added.map(g => ({ [g]: false })));
 
-                this.setState({ games: { ...this.state.games, ...defaults }});
+                this.setState(state => (
+                    { games: { ...state.games, ...defaults } }
+                ));
 
                 const games = await api.getGames(...added);
 
-                this.setState({ games: merge(this.state.games, games) });
+                this.setState(state => (
+                    { games: { ...state.games, ...pick(games, Object.keys(state.games)) } }
+                ));
             }
         }
     }

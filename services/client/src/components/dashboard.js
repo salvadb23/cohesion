@@ -48,16 +48,14 @@ class Dashboard extends Component {
 
         // Generate default filters as false.
         const filters = Object.assign(
-            {},
             ...Object.entries(glossaries)
-            .map(([glossName, gloss]) => (
-                {
-                    [glossName]: Object.assign(
-                        {},
-                        ...Object.keys(gloss).map(id => ({ [id]: false }))
-                    )
-                }
-            ), {})
+                .map(([glossName, gloss]) => (
+                    {
+                        [glossName]: Object.assign(
+                            ...Object.keys(gloss).map(id => ({ [id]: false }))
+                        )
+                    }
+                ), {})
         );
 
         this.setState({ glossaries, filters });
@@ -65,30 +63,32 @@ class Dashboard extends Component {
 
     addPlayers = async (...ids) => {
         const newPlayers = await api.getPlayers(...ids);
-        const { players: oldPlayers } = this.state;
 
-        this.setState({ players: { ...oldPlayers, ...newPlayers }});
+        this.setState((state) => (
+            { players: { ...state.players, ...newPlayers }}
+        ));
     }
 
     removePlayers = (...ids) => {
-        const players = this.state;
-
-        this.setState({ players: omit(players, ids) });
+        this.setState(state => (
+            { players: omit(state.players, ids) }
+        ));
     }
 
     toggleFilter = (category, id) => {
-        const { filters } = this.state;
-        const { [category]: catFilters } = filters;
-        const { [id]: val } = catFilters;
+        this.setState((state) => {
+            const { filters } = state;
+            const { [category]: catFilters } = filters;
+            const { [id]: val } = catFilters;
 
-        this.setState({ filters: { ...filters, [category]: { ...catFilters, [id]: !val } } });
+            return { filters: { ...filters, [category]: { ...catFilters, [id]: !val } } };
+        })
     }
 
     genFilterList = () => {
         let { filters } = this.state;
 
         return Object.assign(
-            {},
             ...Object.entries(filters).map(([cat, catFilters]) => (
                 {
                     [cat]: Object.entries(catFilters)
