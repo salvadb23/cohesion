@@ -29,6 +29,7 @@ class Dashboard extends Component {
       players: {},
       glossaries: {},
       filters: {},
+      games: [],
     };
 
     async componentDidMount() {
@@ -87,16 +88,22 @@ class Dashboard extends Component {
       );
     }
 
-    render() {
-      const { players, glossaries } = this.state;
-      const { addPlayers, removePlayers } = this;
+    // For use in button
+    genGameList = () => {
+      this.setState((state) => {
+        const games = intersection(...Object.values(state.players).map(p => p.games));
+        return { games };
+      });
+    }
 
-      const sharedGames = intersection(...Object.values(players).map(p => p.games));
+    render() {
+      const { players, glossaries, games } = this.state;
+      const { addPlayers, removePlayers } = this;
 
       return (
         <Wrapper>
           <ProfileList {...{ players, addPlayers, removePlayers }} />
-          <GameList games={sharedGames} glossaries={glossaries} />
+          <GameList {...{ games, glossaries }} />
         </Wrapper>
       );
     }
