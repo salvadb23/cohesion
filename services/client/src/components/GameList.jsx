@@ -57,14 +57,17 @@ class GameList extends Component {
       }
     }
 
+    renderGames = () => {
+      const { games } = this.state
+       return Object.values(games).filter(game => game).map(game => (
+         <Game key={game.appid} {...game}/>
+       ))
+    }
+
     render() {
       return (
         <GameContainer>
-          <Game />
-          <Game />
-          <Game />
-          <Game />
-          <Game />
+          { this.renderGames() }
         </GameContainer>
       );
     }

@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 
-import { Field, Input } from 'bloomer';
+import { Field, Input, Button } from 'bloomer';
 import styled from 'styled-components';
 
 import { handleInputChange } from 'react-helpers';
@@ -51,8 +51,10 @@ class ProfileList extends Component {
 
     renderPlayers = () => {
       const { players } = this.props;
-      return Object.values(players).map(player => (
+
+      return Object.values(players).map((player, index) => (
         <ProfileCard
+          key={Object.keys(players)[ index ]}
           name={player.realname}
           avatar={player.avatarmedium}
           alias={player.personaname}
@@ -79,7 +81,7 @@ class ProfileList extends Component {
                 onChange={this.handleChange}
                 onKeyDown={this.handleKeyDown}
               />
-              {/* <Button>Submit</Button> */}
+              <Button onClick={this.props.genGameList}>Load</Button>
             </Field>
           </InputContainer>
         </ProfileContainer>

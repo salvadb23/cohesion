@@ -15,25 +15,46 @@ const game = {
   backgroundColor: 'white',
 };
 
-function Game() {
+const img = {
+  objectFit: 'contain',
+  maxWidth: '100%',
+  maxHeight: '100%',
+  width: 'auto',
+  height: 'auto',
+}
+
+
+
+function Game(props) {
+
+  // const cover = () => {
+  //   let result;
+  //   if(props.cover == null){
+  //     console.log ("Loading")
+  //   } else {
+  //     result = props.cover.image_id
+  //   }
+  //   return result
+  // }
+
+  // console.log(Object.values(props.cover))
+
   return (
     <Media style={game}>
       <MediaLeft>
-        <Image isSize="96x96" src="http://conceptartworld.com/wp-content/uploads/2013/11/AC4_001.jpg" />
+        { props.cover && <img style={ img } src={`https://images.igdb.com/igdb/image/upload/t_thumb/${props.cover.image_id}.png`}></img> }
       </MediaLeft>
       <MediaContent>
         <Content>
           <p>
-            <strong>Assassinss Creed</strong>
+            <strong>{props.name}</strong>
             <br />
             Multi-Player
             <br />
             <strong>Release Date:</strong>
-            {' '}
             November 19, 2013
             <br />
             <strong>Tags:</strong>
-            {' '}
             Adventure, Thriller
           </p>
         </Content>

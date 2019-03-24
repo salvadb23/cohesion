@@ -98,11 +98,11 @@ class Dashboard extends Component {
 
     render() {
       const { players, glossaries, games } = this.state;
-      const { addPlayers, removePlayers } = this;
+      const { addPlayers, removePlayers, genGameList } = this;
 
       return (
         <Wrapper>
-          <ProfileList {...{ players, addPlayers, removePlayers }} />
+          <ProfileList {...{ players, addPlayers, removePlayers, genGameList }} />
           <GameList {...{ games, glossaries }} />
         </Wrapper>
       );
