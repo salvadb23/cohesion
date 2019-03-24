@@ -24,6 +24,7 @@
     "express": "^4.16.4",
     "express-async-handler": "^1.1.4",
     "lodash": "^4.17.11",
+    "mongoose": "^5.4.19",
     "steam-wrapper": "gitlab:dacio/steam-wrapper"
   },
   "devDependencies": {
