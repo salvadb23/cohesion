@@ -83,7 +83,7 @@ router.get('/games', asyncHandler(async (req, res) => {
   });
 
   // Those that aren't found should default to null for client use.
-  const defaults = Object.assign({}, ...ids.map(id => ({ [id]: null })));
+  const defaults = Object.assign(...ids.map(id => ({ [id]: null })));
 
   res.json({ ...defaults, ...zipObject(resultIds, gamesInfo) });
 }));
