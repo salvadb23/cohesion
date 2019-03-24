@@ -93,7 +93,10 @@ const keyArrById = arr => keyBy(arr, 'id');
 
 // For mapping id results from /details to names
 router.get('/glossaries', asyncHandler(async (req, res) => {
-  const [themes, genres, playerPerspectives, platforms] = await Promise.all([
+  const [
+    // eslint-disable-next-line camelcase
+    themes, genres, player_perspectives, platforms, game_modes,
+  ] = await Promise.all([
     IGDB()
       .fields('name')
       .request('/themes')
@@ -125,8 +128,9 @@ router.get('/glossaries', asyncHandler(async (req, res) => {
   res.json({
     themes,
     genres,
-    playerPerspectives,
+    player_perspectives,
     platforms,
+    game_modes,
   });
 }));
 
