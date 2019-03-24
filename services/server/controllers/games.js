@@ -19,9 +19,9 @@ router.get('/', asyncHandler(async (req, res) => {
   const games = await Game.find({ appid: { $in: ids } });
 
   const batchSize = 10;
-  const batches = chunk(difference(ids, games.map(game => game.appid), batchSize));
+  const batches = chunk(difference(ids, games.map(game => game.appid)), batchSize)
 
-  const newGames = await Game.create(
+  const newGames = await Game.insertMany(
     (await Promise.all(batches.map((batch) => {
       // IGDB free tier doesn't include external_games field
       const urls = batch.map(id => `https://store.steampowered.com/app/${id}`);
@@ -51,6 +51,7 @@ router.get('/', asyncHandler(async (req, res) => {
 
         return { appid, ...newGame };
       }),
+    { ordered: false },
   );
 
   // Those that aren't found should default to null for client use.
