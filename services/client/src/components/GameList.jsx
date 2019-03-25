@@ -63,21 +63,25 @@ class GameList extends Component {
       let { games } = this.state;
       const { filterLists } = this.props;
 
-      games = pickBy(games, Boolean);
-      Object.entries(filterLists).forEach(([cat, filters]) => {
-        if (filters.length) {
-          games = pickBy(games, (game) => {
-            const { [cat]: ids } = game;
-            if (ids) {
-              return filters.every(f => f in ids);
+      games = pickBy(games, (game) => {
+        if (game) {
+          return Object.entries(filterLists).every(([cat, catFilters]) => {
+            if (catFilters.length) {
+              const { [cat]: ids } = game;
+
+              if (ids) {
+                return difference(catFilters, ids).length === 0;
+              }
             }
 
-            return false;
+            return true;
           });
         }
+
+        return false;
       });
 
-      return Object.values(games).filter(game => game).map(game => (
+      return Object.values(games).map(game => (
         <Game key={game.appid} glossary={this.props.glossaries} {...game} />
       ));
     }
