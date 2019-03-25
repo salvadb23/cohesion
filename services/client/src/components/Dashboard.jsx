@@ -98,7 +98,7 @@ class Dashboard extends Component {
       const { filters } = this.state;
 
       return Object.entries(filters).reduce((prev, [cat, catFilters]) => (
-        { ...prev, [cat]: Object.keys(pickBy(catFilters, Boolean)) }
+        { ...prev, [cat]: Object.keys(pickBy(catFilters, Boolean)).map(Number) }
       ), {});
     }
 
