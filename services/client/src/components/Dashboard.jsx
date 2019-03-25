@@ -8,9 +8,9 @@ import pickBy from 'lodash/pickBy';
 
 import ProfileList from './ProfileContainer';
 import GameList from './GameList';
+import Filters from './Filters';
 
 import * as api from '../api';
-import Filters from './Filters';
 
 const Wrapper = styled.div`
     width: 85vw;
@@ -95,7 +95,7 @@ class Dashboard extends Component {
         players, glossaries, games, filters,
       } = this.state;
       const {
-        addPlayers, removePlayers, genGameList, toggleFilter, genFilterLists,
+        addPlayers, removePlayers, genGameList, toggleFilter,
       } = this;
 
       return (
@@ -106,7 +106,7 @@ class Dashboard extends Component {
             }}
           />
           <Filters {...{ glossaries, filters, toggleFilter }} />
-          <GameList {...{ games, glossaries, filterLists: genFilterLists() }} />
+          <GameList {...{ games, glossaries, filterLists: this.genFilterLists() }} />
         </Wrapper>
       );
     }
