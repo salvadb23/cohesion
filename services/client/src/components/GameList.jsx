@@ -20,6 +20,7 @@ const GameContainer = styled.div`
 class GameList extends Component {
     static propTypes = {
       games: PropTypes.arrayOf(PropTypes.number).isRequired,
+      glossaries: PropTypes.objectOf(PropTypes.object).isRequired,
     };
 
     state = {
@@ -58,10 +59,11 @@ class GameList extends Component {
     }
 
     renderGames = () => {
-      const { games } = this.state
-       return Object.values(games).filter(game => game).map(game => (
-         <Game key={game.appid} {...game}/>
-       ))
+      const { games } = this.state;
+      const { glossaries } = this.props;
+      return Object.values(games).filter(game => game).map(game => (
+        <Game key={game.appid} glossary={glossaries} {...game} />
+      ));
     }
 
     render() {

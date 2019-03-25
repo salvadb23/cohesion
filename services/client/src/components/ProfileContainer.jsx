@@ -30,6 +30,7 @@ class ProfileList extends Component {
       // TODO: Add specificity to player objects
       players: PropTypes.objectOf(PropTypes.object).isRequired,
       addPlayers: PropTypes.func.isRequired,
+      genGameList: PropTypes.func.isRequired,
       // removePlayers: PropTypes.func.isRequired,
     }
 
@@ -54,7 +55,7 @@ class ProfileList extends Component {
 
       return Object.values(players).map((player, index) => (
         <ProfileCard
-          key={Object.keys(players)[ index ]}
+          key={Object.keys(players)[index]}
           name={player.realname}
           avatar={player.avatarmedium}
           alias={player.personaname}
@@ -66,6 +67,7 @@ class ProfileList extends Component {
 
     render() {
       const { player } = this.state;
+      const { genGameList } = this.props;
 
       return (
         <ProfileContainer>
@@ -81,7 +83,7 @@ class ProfileList extends Component {
                 onChange={this.handleChange}
                 onKeyDown={this.handleKeyDown}
               />
-              <Button onClick={this.props.genGameList}>Load</Button>
+              <Button onClick={genGameList}>Load</Button>
             </Field>
           </InputContainer>
         </ProfileContainer>

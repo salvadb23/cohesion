@@ -102,7 +102,10 @@ class Dashboard extends Component {
 
       return (
         <Wrapper>
-          <ProfileList {...{ players, addPlayers, removePlayers, genGameList }} />
+          <ProfileList {...{
+            players, addPlayers, removePlayers, genGameList,
+          }}
+          />
           <GameList {...{ games, glossaries }} />
         </Wrapper>
       );

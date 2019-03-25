@@ -6,10 +6,13 @@ import {
 } from 'bloomer';
 import Moment from 'react-moment';
 
+import '../App.css';
+
 const size = {
   paddingLeft: 'calc(10px + 2vw)',
   paddingRight: 'calc(10px + 2vw)',
   width: '80%',
+  minWidth: '400px',
   height: 'max-content',
   margin: 'auto',
   marginBottom: '15px',
@@ -26,7 +29,7 @@ function ProfileCard(props) {
   } = props;
 
   return (
-    <Card style={size}>
+    <Card className="Card" style={size}>
       <CardContent>
         <Media style={padding}>
           <MediaLeft>
