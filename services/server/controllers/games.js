@@ -21,7 +21,7 @@ router.get('/', asyncHandler(async (req, res) => {
   const batchSize = 10;
   const batches = chunk(difference(ids, games.map(game => game.appid)), batchSize);
 
-  const newGames = await Game.insertMany(
+  const newGames = await Game.create(
     (await Promise.all(batches.map(async (batch) => {
       // IGDB free tier doesn't include external_games field
       const urls = batch.map(id => `https://store.steampowered.com/app/${id}`);
@@ -38,7 +38,10 @@ router.get('/', asyncHandler(async (req, res) => {
           'game_modes',
         ])
         .limit(batchSize)
-        .where(`websites.url=("${urls.join('","')}")`)
+        .where([
+          `websites.url=("${urls.join('","')}")`,
+          'parent_game=null', // Ignore DLC
+        ])
         .request('/games');
 
       return igdbRes.data;
