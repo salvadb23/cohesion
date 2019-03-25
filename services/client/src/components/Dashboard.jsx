@@ -75,10 +75,11 @@ class Dashboard extends Component {
       });
     }
 
-    genFilterList = () => {
-      const { filters } = this.state;
+    genFilterLists = () => {
+      const { filters } = this.state
 
       return Object.assign(
+        {},
         ...Object.entries(filters).map(([cat, catFilters]) => (
           {
             [cat]: Object.entries(catFilters)
@@ -102,7 +103,7 @@ class Dashboard extends Component {
         players, glossaries, games, filters,
       } = this.state;
       const {
-        addPlayers, removePlayers, genGameList, toggleFilter,
+        addPlayers, removePlayers, genGameList, toggleFilter, genFilterLists,
       } = this;
 
       return (
@@ -112,7 +113,7 @@ class Dashboard extends Component {
               players, addPlayers, removePlayers, genGameList,
             }}
           />
-          <GameList {...{ games, glossaries }} />
+          <GameList {...{ games, glossaries, filterLists: genFilterLists() }} />
           <Filters {...{ glossaries, filters, toggleFilter }} />
         </Wrapper>
       );
