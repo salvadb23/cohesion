@@ -4,6 +4,7 @@ import styled from 'styled-components';
 
 import intersection from 'lodash/intersection';
 import omit from 'lodash/omit';
+import pickBy from 'lodash/pickBy';
 
 import ProfileList from './ProfileContainer';
 import GameList from './GameList';
@@ -37,16 +38,14 @@ class Dashboard extends Component {
       const glossaries = await api.getGlossaries();
 
       // Generate default filters as false.
-      const filters = Object.assign(
-        ...Object.entries(glossaries)
-          .map(([glossName, gloss]) => (
-            {
-              [glossName]: Object.assign(
-                ...Object.keys(gloss).map(id => ({ [id]: false })),
-              ),
-            }
-          )),
-      );
+      const filters = Object.entries(glossaries).reduce((prev, [glossName, gloss]) => (
+        {
+          ...prev,
+          [glossName]: Object.keys(gloss).reduce((prevDef, id) => (
+            { ...prevDef, [id]: false }
+          ), {}),
+        }
+      ), {});
 
       this.setState({ glossaries, filters });
     }
@@ -76,24 +75,17 @@ class Dashboard extends Component {
     }
 
     genFilterLists = () => {
-      const { filters } = this.state
+      const { filters } = this.state;
 
-      return Object.assign(
-        {},
-        ...Object.entries(filters).map(([cat, catFilters]) => (
-          {
-            [cat]: Object.entries(catFilters)
-              .filter(([, catFilter]) => catFilter) // If filter is enabled
-              .map(([id]) => id), // Keep only id
-          }
-        )),
-      );
+      return Object.entries(filters).reduce((prev, [cat, catFilters]) => (
+        { ...prev, [cat]: Object.keys(pickBy(catFilters, Boolean)) }
+      ), {});
     }
 
     // For use in button
     genGameList = () => {
       this.setState((state) => {
-        const games = intersection(...Object.values(state.players).map(p => p.games));
+        const games = intersection([], ...Object.values(state.players).map(p => p.games));
         return { games };
       });
     }
@@ -113,8 +105,8 @@ class Dashboard extends Component {
               players, addPlayers, removePlayers, genGameList,
             }}
           />
-          <GameList {...{ games, glossaries, filterLists: genFilterLists() }} />
           <Filters {...{ glossaries, filters, toggleFilter }} />
+          <GameList {...{ games, glossaries, filterLists: genFilterLists() }} />
         </Wrapper>
       );
     }
