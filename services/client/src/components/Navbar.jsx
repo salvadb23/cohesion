@@ -8,7 +8,7 @@ const styles = {
   position: 'fixed',
   width: '100vw',
   height: '55px',
-  backgroundColor: '#550B0B',
+  backgroundColor: '#FF3760',
   display: 'flex',
   alignItems: 'center',
   justifyContent: 'space-between',
