@@ -83,7 +83,7 @@ class ProfileList extends Component {
                 onChange={this.handleChange}
                 onKeyDown={this.handleEnterKey}
               />
-              <Button onClick={genGameList}>Load</Button>
+              <Button onClick={() => genGameList()}>Load</Button>
             </Field>
           </InputContainer>
         </ProfileContainer>
