@@ -17,6 +17,7 @@ const size = {
   marginTop: '30px',
   minWidth: '400px',
   marginBottom: '50px',
+  borderRadius: '4px',
 };
 
 const margin = {

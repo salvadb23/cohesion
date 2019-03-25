@@ -13,7 +13,7 @@ import Game from './Game';
 import * as api from '../api';
 
 const GameContainer = styled.div`
-    padding-top: 40px;
+    padding-top: 101px;
     grid-area: g;
     overflow: auto;
 `;
@@ -21,7 +21,8 @@ const GameContainer = styled.div`
 class GameList extends Component {
     static propTypes = {
       games: PropTypes.arrayOf(PropTypes.number).isRequired,
-      filterLists: PropTypes.objectOf(PropTypes.string).isRequired,
+      filterLists: PropTypes.objectOf(PropTypes.array).isRequired,
+      glossaries: PropTypes.objectOf(PropTypes.object).isRequired,
     };
 
     state = {
@@ -61,7 +62,7 @@ class GameList extends Component {
 
     renderGames = () => {
       let { games } = this.state;
-      const { filterLists } = this.props;
+      const { filterLists, glossaries } = this.props;
 
       games = pickBy(games, (game) => {
         if (game) {
@@ -82,7 +83,7 @@ class GameList extends Component {
       });
 
       return Object.values(games).map(game => (
-        <Game key={game.appid} glossary={this.props.glossaries} {...game} />
+        <Game key={game.appid} glossary={glossaries} {...game} />
       ));
     }
 

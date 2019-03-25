@@ -10,9 +10,10 @@ import ProfileCard from './ProfileCard';
 import Filters from './Filters';
 
 const ProfileContainer = styled.div`
-    padding-top: 40px;
+    padding-top: 100px;
     grid-area: p;
     overflow: auto;
+    background-color: #fbfbfb;
 `;
 const padding = {
   textAlign: 'center',
@@ -33,6 +34,9 @@ class ProfileList extends Component {
       players: PropTypes.objectOf(PropTypes.object).isRequired,
       addPlayers: PropTypes.func.isRequired,
       genGameList: PropTypes.func.isRequired,
+      glossaries: PropTypes.objectOf(PropTypes.object).isRequired,
+      filters: PropTypes.objectOf(PropTypes.object).isRequired,
+      toggleFilter: PropTypes.func.isRequired,
       // removePlayers: PropTypes.func.isRequired,
     }
 
@@ -69,7 +73,9 @@ class ProfileList extends Component {
 
     render() {
       const { player } = this.state;
-      const { genGameList, glossaries, filters, toggleFilter } = this.props;
+      const {
+        genGameList, glossaries, filters, toggleFilter,
+      } = this.props;
 
       return (
         <ProfileContainer>
