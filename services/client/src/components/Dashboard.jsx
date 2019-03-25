@@ -44,7 +44,7 @@ class Dashboard extends Component {
                 ...Object.keys(gloss).map(id => ({ [id]: false })),
               ),
             }
-          ), {}),
+          )),
       );
 
       this.setState({ glossaries, filters });
