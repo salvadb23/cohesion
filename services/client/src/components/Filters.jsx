@@ -16,12 +16,11 @@ function Filters(props) {
 
           return (
             <Field key={cat} isGrouped>
-              <FieldLabel>{startCase(cat)}</FieldLabel>
+              <FieldLabel>{`${startCase(cat)}:`}</FieldLabel>
               {
-                Object.entries(catFilters).map(([id, enabled]) => (
+                Object.entries(catFilters).map(([id, checked]) => (
                   <Checkbox
-                    key={id}
-                    checked={enabled}
+                    {...{ key: id, checked }}
                     readOnly
                     onClick={() => toggleFilter(cat, id)}
                   >
