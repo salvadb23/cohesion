@@ -1,5 +1,5 @@
 {
-  "name": "cohesion-react",
+  "name": "@cohesion/client",
   "version": "0.1.0",
   "private": true,
   "dependencies": {

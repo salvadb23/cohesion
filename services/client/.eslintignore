@@ -1,3 +1,4 @@
 src/setupProxy.js
 src/serviceWorker.js
 src/index.js
+build/

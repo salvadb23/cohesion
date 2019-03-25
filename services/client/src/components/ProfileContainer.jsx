@@ -37,7 +37,7 @@ class ProfileList extends Component {
       glossaries: PropTypes.objectOf(PropTypes.object).isRequired,
       filters: PropTypes.objectOf(PropTypes.object).isRequired,
       toggleFilter: PropTypes.func.isRequired,
-      // removePlayers: PropTypes.func.isRequired,
+      removePlayers: PropTypes.func.isRequired,
     }
 
     handleChange = handleInputChange.bind(this);
@@ -57,16 +57,17 @@ class ProfileList extends Component {
 
 
     renderPlayers = () => {
-      const { players } = this.props;
+      const { players, removePlayers } = this.props;
 
-      return Object.values(players).map((player, index) => (
+      return Object.entries(players).map(([id, player]) => (
         <ProfileCard
-          key={Object.keys(players)[index]}
+          key={id}
           name={player.realname}
           avatar={player.avatarmedium}
           alias={player.personaname}
           games={player.games ? player.games.length : 0}
           lastonline={player.lastlogoff}
+          onClickDelete={() => removePlayers(id)}
         />
       ));
     }
