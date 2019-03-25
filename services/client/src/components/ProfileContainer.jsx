@@ -7,10 +7,12 @@ import styled from 'styled-components';
 import { handleInputChange } from 'react-helpers';
 
 import ProfileCard from './ProfileCard';
+import Filters from './Filters';
 
 const ProfileContainer = styled.div`
     padding-top: 40px;
     grid-area: p;
+    overflow: auto;
 `;
 const padding = {
   textAlign: 'center',
@@ -67,7 +69,7 @@ class ProfileList extends Component {
 
     render() {
       const { player } = this.state;
-      const { genGameList } = this.props;
+      const { genGameList, glossaries, filters, toggleFilter } = this.props;
 
       return (
         <ProfileContainer>
@@ -77,7 +79,7 @@ class ProfileList extends Component {
               <Input
                 style={padding}
                 type="text"
-                placeholder="Add a friend!"
+                placeholder="Enter a Steam ID"
                 name="player"
                 value={player}
                 onChange={this.handleChange}
@@ -86,6 +88,7 @@ class ProfileList extends Component {
               <Button onClick={() => genGameList()}>Load</Button>
             </Field>
           </InputContainer>
+          <Filters {...{ glossaries, filters, toggleFilter }} />
         </ProfileContainer>
       );
     }

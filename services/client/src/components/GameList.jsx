@@ -13,7 +13,7 @@ import Game from './Game';
 import * as api from '../api';
 
 const GameContainer = styled.div`
-    padding-top: 39px;
+    padding-top: 40px;
     grid-area: g;
     overflow: auto;
 `;

@@ -9,12 +9,11 @@ import qs from 'qs';
 
 import ProfileList from './ProfileContainer';
 import GameList from './GameList';
-import Filters from './Filters';
 
 import * as api from '../api';
 
 const Wrapper = styled.div`
-    width: 85vw;
+    width: 100vw;
     height: 100vh;
     margin: auto;
     display: grid;
@@ -52,7 +51,6 @@ class Dashboard extends Component {
 
       const { players } = qs.parse(document.location.search, { ignoreQueryPrefix: true });
       if (players) {
-        console.log(players);
         await this.addPlayers(players);
         this.genGameList();
       }
@@ -122,10 +120,9 @@ class Dashboard extends Component {
         <Wrapper>
           <ProfileList
             {...{
-              players, addPlayers, removePlayers, genGameList,
+              players, addPlayers, removePlayers, genGameList, glossaries, filters, toggleFilter,
             }}
           />
-          <Filters {...{ glossaries, filters, toggleFilter }} />
           <GameList {...{ games, glossaries, filterLists: this.genFilterLists() }} />
         </Wrapper>
       );
