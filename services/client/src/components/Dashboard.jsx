@@ -108,13 +108,6 @@ class Dashboard extends Component {
 
       return (
         <Wrapper>
-<<<<<<< HEAD
-          <ProfileList {...{
-            players, addPlayers, removePlayers, genGameList,
-          }}
-          />
-          <GameList {...{ games, glossaries }} />
-=======
           <ProfileList
             {...{
               players, addPlayers, removePlayers, genGameList,
@@ -122,7 +115,6 @@ class Dashboard extends Component {
           />
           <GameList {...{ games, glossaries, filterLists: genFilterLists() }} />
           <Filters {...{ glossaries, filters, toggleFilter }} />
->>>>>>> 1c6ee674c2b5423a90afe0a6bfdc136a2c8dca45
         </Wrapper>
       );
     }
