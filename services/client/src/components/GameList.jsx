@@ -6,6 +6,7 @@ import styled from 'styled-components';
 import difference from 'lodash/difference';
 import omit from 'lodash/omit';
 import pick from 'lodash/pick';
+import pickBy from 'lodash/pickBy';
 
 import Game from './Game';
 
@@ -20,7 +21,11 @@ const GameContainer = styled.div`
 class GameList extends Component {
     static propTypes = {
       games: PropTypes.arrayOf(PropTypes.number).isRequired,
+<<<<<<< HEAD
       glossaries: PropTypes.objectOf(PropTypes.object).isRequired,
+=======
+      filterLists: PropTypes.arrayOf(PropTypes.string).isRequired,
+>>>>>>> 1c6ee674c2b5423a90afe0a6bfdc136a2c8dca45
     };
 
     state = {
@@ -59,11 +64,34 @@ class GameList extends Component {
     }
 
     renderGames = () => {
+<<<<<<< HEAD
       const { games } = this.state;
       const { glossaries } = this.props;
       return Object.values(games).filter(game => game).map(game => (
         <Game key={game.appid} glossary={glossaries} {...game} />
       ));
+=======
+      let { games } = this.state
+      const { filterLists } = this.props;
+
+      games = pickBy(games, Boolean);
+      Object.entries(filterLists).forEach(([cat, filters]) => {
+        if (filters.length) {
+          games = pickBy(games, (game) => {
+            const { [cat]: ids } = game;
+            if (ids) {
+              return filters.every(f => f in ids);
+            }
+
+            return false;
+          });
+        }
+      });
+
+       return Object.values(games).filter(game => game).map(game => (
+         <Game key={game.appid} {...game}/>
+       ))
+>>>>>>> 1c6ee674c2b5423a90afe0a6bfdc136a2c8dca45
     }
 
     render() {

@@ -9,6 +9,7 @@ import ProfileList from './ProfileContainer';
 import GameList from './GameList';
 
 import * as api from '../api';
+import Filters from './Filters';
 
 const Wrapper = styled.div`
     width: 85vw;
@@ -44,7 +45,7 @@ class Dashboard extends Component {
                 ...Object.keys(gloss).map(id => ({ [id]: false })),
               ),
             }
-          ), {}),
+          )),
       );
 
       this.setState({ glossaries, filters });
@@ -74,10 +75,11 @@ class Dashboard extends Component {
       });
     }
 
-    genFilterList = () => {
-      const { filters } = this.state;
+    genFilterLists = () => {
+      const { filters } = this.state
 
       return Object.assign(
+        {},
         ...Object.entries(filters).map(([cat, catFilters]) => (
           {
             [cat]: Object.entries(catFilters)
@@ -97,16 +99,30 @@ class Dashboard extends Component {
     }
 
     render() {
-      const { players, glossaries, games } = this.state;
-      const { addPlayers, removePlayers, genGameList } = this;
+      const {
+        players, glossaries, games, filters,
+      } = this.state;
+      const {
+        addPlayers, removePlayers, genGameList, toggleFilter, genFilterLists,
+      } = this;
 
       return (
         <Wrapper>
+<<<<<<< HEAD
           <ProfileList {...{
             players, addPlayers, removePlayers, genGameList,
           }}
           />
           <GameList {...{ games, glossaries }} />
+=======
+          <ProfileList
+            {...{
+              players, addPlayers, removePlayers, genGameList,
+            }}
+          />
+          <GameList {...{ games, glossaries, filterLists: genFilterLists() }} />
+          <Filters {...{ glossaries, filters, toggleFilter }} />
+>>>>>>> 1c6ee674c2b5423a90afe0a6bfdc136a2c8dca45
         </Wrapper>
       );
     }
