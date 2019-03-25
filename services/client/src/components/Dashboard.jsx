@@ -9,6 +9,7 @@ import ProfileList from './ProfileContainer';
 import GameList from './GameList';
 
 import * as api from '../api';
+import Filters from './Filters';
 
 const Wrapper = styled.div`
     width: 85vw;
@@ -97,13 +98,22 @@ class Dashboard extends Component {
     }
 
     render() {
-      const { players, glossaries, games } = this.state;
-      const { addPlayers, removePlayers, genGameList } = this;
+      const {
+        players, glossaries, games, filters,
+      } = this.state;
+      const {
+        addPlayers, removePlayers, genGameList, toggleFilter,
+      } = this;
 
       return (
         <Wrapper>
-          <ProfileList {...{ players, addPlayers, removePlayers, genGameList }} />
+          <ProfileList
+            {...{
+              players, addPlayers, removePlayers, genGameList,
+            }}
+          />
           <GameList {...{ games, glossaries }} />
+          <Filters {...{ glossaries, filters, toggleFilter }} />
         </Wrapper>
       );
     }
