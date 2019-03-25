@@ -4,10 +4,10 @@ const asyncHandler = require('express-async-handler');
 const zipObject = require('lodash/zipObject');
 const merge = require('lodash/merge');
 
-const steamWrapper = require('steam-wrapper');
+const SteamWrapper = require('steam-wrapper');
 
 const router = express.Router();
-const Steam = steamWrapper();
+const Steam = new SteamWrapper(process.env.STEAM_API_KEY);
 
 router.get('/', asyncHandler(async (req, res) => {
   let { steamIds: ids } = req.query;
@@ -15,6 +15,8 @@ router.get('/', asyncHandler(async (req, res) => {
   if (typeof ids === 'string' || ids instanceof String) {
     ids = ids.split(',');
   }
+
+  ids = (await Promise.all(ids.map(id => Steam.GetSteamId64(id)))).filter(Boolean);
 
   const [libraries, profiles] = await Promise.all([
     Promise.all(ids.map(id => Steam.GetOwnedGames(id))),
