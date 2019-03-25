@@ -21,7 +21,7 @@
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
-    "lint": "eslint . --ext .jsx"
+    "lint": "eslint . --ext .jsx,.js"
   },
   "browserslist": [
     ">0.2%",
