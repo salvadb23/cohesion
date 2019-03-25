@@ -5,6 +5,7 @@ import styled from 'styled-components';
 import intersection from 'lodash/intersection';
 import omit from 'lodash/omit';
 import pickBy from 'lodash/pickBy';
+import qs from 'qs';
 
 import ProfileList from './ProfileContainer';
 import GameList from './GameList';
@@ -48,6 +49,13 @@ class Dashboard extends Component {
       ), {});
 
       this.setState({ glossaries, filters });
+
+      const { players } = qs.parse(document.location.search, { ignoreQueryPrefix: true });
+      if (players) {
+        console.log(players);
+        await this.addPlayers(players);
+        this.genGameList();
+      }
     }
 
     addPlayers = async (...ids) => {
@@ -56,12 +64,24 @@ class Dashboard extends Component {
       this.setState(state => (
         { players: { ...state.players, ...newPlayers } }
       ));
+      this.updateUrl();
     }
 
     removePlayers = (...ids) => {
       this.setState(state => (
         { players: omit(state.players, ids) }
       ));
+      this.updateUrl();
+    }
+
+    updateUrl = () => {
+      const { players } = this.state;
+
+      window.history.pushState(
+        '',
+        '',
+        `?${qs.stringify({ players: Object.keys(players) }, { arrayFormat: 'brackets' })}`,
+      );
     }
 
     toggleFilter = (category, id) => {
