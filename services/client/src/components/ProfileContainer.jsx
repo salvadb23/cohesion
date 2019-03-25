@@ -35,7 +35,7 @@ class ProfileList extends Component {
 
     handleChange = handleInputChange.bind(this);
 
-    handleKeyDown = (event) => {
+    handleEnterKey = (event) => {
       const { addPlayers } = this.props;
       const { player } = this.state;
       const { keyCode } = event;
@@ -79,7 +79,7 @@ class ProfileList extends Component {
                 name="player"
                 value={player}
                 onChange={this.handleChange}
-                onKeyDown={this.handleKeyDown}
+                onKeyDown={this.handleEnterKey}
               />
               <Button onClick={this.props.genGameList}>Load</Button>
             </Field>
