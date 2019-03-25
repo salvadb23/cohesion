@@ -59,7 +59,7 @@ class ProfileList extends Component {
           name={player.realname}
           avatar={player.avatarmedium}
           alias={player.personaname}
-          games={player.games.length}
+          games={player.games ? player.games.length : 0}
           lastonline={player.lastlogoff}
         />
       ));
