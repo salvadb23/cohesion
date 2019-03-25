@@ -21,7 +21,7 @@ const GameContainer = styled.div`
 class GameList extends Component {
     static propTypes = {
       games: PropTypes.arrayOf(PropTypes.number).isRequired,
-      filterLists: PropTypes.arrayOf(PropTypes.string),
+      filterLists: PropTypes.arrayOf(PropTypes.string).isRequired,
     };
 
     state = {
