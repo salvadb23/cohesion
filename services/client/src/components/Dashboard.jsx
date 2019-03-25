@@ -51,6 +51,7 @@ class Dashboard extends Component {
       this.setState({ glossaries, filters });
 
       const { players } = qs.parse(document.location.search, { ignoreQueryPrefix: true });
+
       if (players) {
         await this.addPlayers(players);
         this.genGameList();
@@ -71,6 +72,7 @@ class Dashboard extends Component {
         { players: omit(state.players, ids) }
       ));
       this.updateUrl();
+      this.genGameList();
     }
 
     updateUrl = () => {
@@ -123,7 +125,13 @@ class Dashboard extends Component {
           <Wrapper>
             <ProfileList
               {...{
-                players, addPlayers, removePlayers, genGameList, glossaries, filters, toggleFilter,
+                players,
+                addPlayers,
+                removePlayers,
+                genGameList,
+                glossaries,
+                filters,
+                toggleFilter,
               }}
             />
             <GameList {...{ games, glossaries, filterLists: this.genFilterLists() }} />

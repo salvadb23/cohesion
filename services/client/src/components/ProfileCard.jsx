@@ -19,9 +19,9 @@ const size = {
   position: 'relative',
 };
 
-const content = {
-  paddingBottom: '0px',
-};
+// const content = {
+//   paddingBottom: '0px',
+// };
 
 const padding = {
   paddingLeft: '15px',
@@ -35,12 +35,12 @@ const absolute = {
 
 function ProfileCard(props) {
   const {
-    avatar, name, alias, games, lastonline,
+    avatar, name, alias, games, lastonline, onClickDelete,
   } = props;
 
   return (
     <Card className="Card" style={size}>
-      <CardContent style={content}>
+      <CardContent>
         <Media style={padding}>
           <MediaLeft>
             <Image isSize="48x48" src={avatar} />
@@ -59,7 +59,7 @@ function ProfileCard(props) {
           <strong>Last Online: </strong>
           <Moment unix fromNow>{lastonline}</Moment>
         </Content>
-        <Delete style={absolute} />
+        <Delete style={absolute} onClick={onClickDelete} />
       </CardContent>
     </Card>
   );
@@ -71,6 +71,7 @@ ProfileCard.propTypes = {
   alias: PropTypes.string.isRequired,
   lastonline: PropTypes.number.isRequired,
   games: PropTypes.number.isRequired,
+  onClickDelete: PropTypes.func.isRequired,
 };
 
 export default ProfileCard;
