@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 
 import {
   Hero, HeroBody, Container, Title,
@@ -8,7 +9,7 @@ import '../App.css';
 
 const size = {
   backgroundColor: '#08C8F6',
-  backgroundImage: 'linear-gradient(315deg, #08C8F6 0%, #4D5DFB 74%)',
+  backgroundImage: 'hsl(217, 71%, 53%)',
 };
 
 const TitleFontSize = {
@@ -44,7 +45,7 @@ export default function Home() {
         <Container hasTextAlign="centered">
           <Title className="Title" style={TitleFontSize}>COHESION</Title>
           <Title style={SubFontSize}>connecting gamers, one game at a time.</Title>
-          <a href style={link}>Get Started</a>
+          <Link style={link} to="/dashboard">Get Started</Link>
         </Container>
       </HeroBody>
     </Hero>
