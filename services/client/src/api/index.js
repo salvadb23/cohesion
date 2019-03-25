@@ -1,6 +1,8 @@
 import axios from 'axios';
 import qs from 'qs';
 
+import chunk from 'lodash/chunk';
+
 const paramsSerializer = params => qs.stringify(params, { arrayFormat: 'comma' });
 
 export async function getPlayers(...steamIds) {
@@ -13,12 +15,15 @@ export async function getPlayers(...steamIds) {
 }
 
 export async function getGames(...appIds) {
-  const res = await axios.get('/api/games', {
-    params: { appIds },
-    paramsSerializer,
-  });
+  const res = await Promise.all(
+    chunk(appIds, 100)
+      .map(ids => axios.get('/api/games', {
+        params: { appIds: ids },
+        paramsSerializer,
+      })),
+  );
 
-  return res.data;
+  return Object.assign({}, ...res.map(r => r.data));
 }
 
 export async function getGlossaries() {
