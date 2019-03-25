@@ -9,6 +9,7 @@ import qs from 'qs';
 
 import ProfileList from './ProfileContainer';
 import GameList from './GameList';
+import Navigation from './Navbar';
 
 import * as api from '../api';
 
@@ -20,7 +21,7 @@ const Wrapper = styled.div`
     grid-template-columns: 3fr 5fr;
     grid-template-areas: "p g";
 
-    @media only screen and (max-width: 1000px) {
+    @media only screen and (max-width: 1200px) {
         display: block;
       }
 
@@ -117,14 +118,17 @@ class Dashboard extends Component {
       } = this;
 
       return (
-        <Wrapper>
-          <ProfileList
-            {...{
-              players, addPlayers, removePlayers, genGameList, glossaries, filters, toggleFilter,
-            }}
-          />
-          <GameList {...{ games, glossaries, filterLists: this.genFilterLists() }} />
-        </Wrapper>
+        <div>
+          <Navigation />
+          <Wrapper>
+            <ProfileList
+              {...{
+                players, addPlayers, removePlayers, genGameList, glossaries, filters, toggleFilter,
+              }}
+            />
+            <GameList {...{ games, glossaries, filterLists: this.genFilterLists() }} />
+          </Wrapper>
+        </div>
       );
     }
 }

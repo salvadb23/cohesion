@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 
 import {
-  Card, CardContent, Media, MediaLeft, Image, Title, MediaContent, Content, Subtitle,
+  Card, CardContent, Media, MediaLeft, Image, Title, MediaContent, Content, Subtitle, Delete,
 } from 'bloomer';
 import Moment from 'react-moment';
 
@@ -12,15 +12,25 @@ const size = {
   paddingLeft: 'calc(10px + 2vw)',
   paddingRight: 'calc(10px + 2vw)',
   width: '70% !important',
-  minWidth: '400px',
   height: 'max-content',
   margin: 'auto',
   marginBottom: '15px',
+  borderRadius: '4px',
+  position: 'relative',
+};
 
+const content = {
+  paddingBottom: '0px',
 };
 
 const padding = {
   paddingLeft: '15px',
+};
+
+const absolute = {
+  position: 'absolute',
+  top: '10px',
+  right: '10px',
 };
 
 function ProfileCard(props) {
@@ -30,7 +40,7 @@ function ProfileCard(props) {
 
   return (
     <Card className="Card" style={size}>
-      <CardContent>
+      <CardContent style={content}>
         <Media style={padding}>
           <MediaLeft>
             <Image isSize="48x48" src={avatar} />
@@ -49,6 +59,7 @@ function ProfileCard(props) {
           <strong>Last Online: </strong>
           <Moment unix fromNow>{lastonline}</Moment>
         </Content>
+        <Delete style={absolute} />
       </CardContent>
     </Card>
   );
