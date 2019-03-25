@@ -1,7 +1,9 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-import { Field, FieldLabel, Checkbox } from 'bloomer';
+import {
+  Field, FieldLabel, Checkbox, Card 
+} from 'bloomer';
 
 import startCase from 'lodash/startCase';
 
@@ -9,7 +11,7 @@ function Filters(props) {
   const { filters, glossaries, toggleFilter } = props;
 
   return (
-    <div>
+    <Card>
       {
         Object.entries(filters).map(([cat, catFilters]) => {
           const { [cat]: glossary } = glossaries;
@@ -32,7 +34,7 @@ function Filters(props) {
           );
         })
       }
-    </div>
+    </Card>
   );
 }
 

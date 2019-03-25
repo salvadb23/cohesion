@@ -11,7 +11,7 @@ import '../App.css';
 const size = {
   paddingLeft: 'calc(10px + 2vw)',
   paddingRight: 'calc(10px + 2vw)',
-  width: '80%',
+  width: '70% !important',
   minWidth: '400px',
   height: 'max-content',
   margin: 'auto',

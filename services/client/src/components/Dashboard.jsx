@@ -7,6 +7,7 @@ import omit from 'lodash/omit';
 
 import ProfileList from './ProfileContainer';
 import GameList from './GameList';
+import Home from './Home';
 
 import * as api from '../api';
 import Filters from './Filters';
@@ -107,15 +108,16 @@ class Dashboard extends Component {
       } = this;
 
       return (
-        <Wrapper>
-          <ProfileList
-            {...{
-              players, addPlayers, removePlayers, genGameList,
-            }}
-          />
-          <GameList {...{ games, glossaries, filterLists: genFilterLists() }} />
-          <Filters {...{ glossaries, filters, toggleFilter }} />
-        </Wrapper>
+        // <Wrapper>
+        //   <ProfileList
+        //     {...{
+        //       players, addPlayers, removePlayers, genGameList,
+        //     }}
+        //   />
+        //   <GameList {...{ games, glossaries, filterLists: genFilterLists() }} />
+        //   <Filters {...{ glossaries, filters, toggleFilter }} />
+        // </Wrapper>
+        <Home />
       );
     }
 }

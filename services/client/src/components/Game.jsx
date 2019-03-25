@@ -31,14 +31,15 @@ const Span = styled.span`
 
 
 function Game(props) {
-  const { themes, glossary, cover, name, game_modes, genres  } = props;
+  const {
+    themes, glossary, cover, name, game_modes, genres,
+  } = props;
   const theme = themes && themes.map(themeid => glossary.themes[themeid] && glossary.themes[themeid].name);
   const genre = genres && genres.map(genreid => glossary.genres[genreid] && glossary.genres[genreid].name);
-  console.log(genre)
   return (
     <Media style={game}>
       <MediaLeft>
-        { cover && <img style={img} alt='https://via.placeholder.com/96' src={`https://images.igdb.com/igdb/image/upload/t_thumb/${cover.image_id}.png`} /> }
+        { cover && <img style={img} alt="https://via.placeholder.com/96" src={`https://images.igdb.com/igdb/image/upload/t_thumb/${cover.image_id}.png`} /> }
       </MediaLeft>
       <MediaContent>
         <Content>
@@ -48,10 +49,21 @@ function Game(props) {
             {game_modes && glossary.game_modes[game_modes[0]].name}
             <br />
             <strong>Themes: </strong>
-            {genre && genre.map((genre,index) => genre && <span>{genre},</span>)}
+            {genre && genre.map((genre, index) => genre && (
+            <span>
+              {genre}
+,
+            </span>
+            ))}
             <br />
-            <strong>Tags:</strong> 
-            {theme && theme.map((theme, index) => theme && <Span key={index}>{theme}, </Span>)}
+            <strong>Tags:</strong>
+            {theme && theme.map((theme, index) => theme && (
+            <Span key={index}>
+              {theme}
+,
+              {' '}
+            </Span>
+            ))}
           </p>
         </Content>
       </MediaContent>

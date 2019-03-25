@@ -1,19 +1,21 @@
 import React from 'react';
 
 import {
-  Hero, HeroBody, Container, Title, Input,
+  Hero, HeroBody, Container, Title,
 } from 'bloomer';
 
 import '../App.css';
 
 const size = {
-  backgroundColor: 'papayawhip',
+  backgroundColor: '#08C8F6',
+  backgroundImage: 'linear-gradient(315deg, #08C8F6 0%, #4D5DFB 74%)',
 };
 
 const TitleFontSize = {
   color: 'white',
-  fontSize: 'calc(7vw + 30px)',
+  fontSize: 'calc(7vw + 40px)',
   marginBottom: '0px',
+  fontWeight: 'bold',
 };
 
 const SubFontSize = {
@@ -21,14 +23,18 @@ const SubFontSize = {
   min: '30px',
   marginTop: '0px',
   marginBottom: '30px',
+  color: 'white',
+  fontWeight: '300',
 };
 
-const width = {
-  width: '50%',
-  borderRadius: '40px',
-  textAlign: 'center',
-  padding: '20px',
-  fontSize: '15px',
+const link = {
+  color: 'white',
+  fontSize: 'calc(10px + 1vw)',
+  fontWeight: '300',
+  border: '1px solid white',
+  padding: '15px',
+  borderRadius: '10px',
+  marginTop: '20px',
 };
 
 export default function Home() {
@@ -37,8 +43,8 @@ export default function Home() {
       <HeroBody>
         <Container hasTextAlign="centered">
           <Title className="Title" style={TitleFontSize}>COHESION</Title>
-          <Title style={SubFontSize}>Find games you and your friends both have</Title>
-          <Input style={width} isSize="medium" type="text" placeholder="Enter A Steam ID" />
+          <Title style={SubFontSize}>connecting gamers, one game at a time.</Title>
+          <a href style={link}>Get Started</a>
         </Container>
       </HeroBody>
     </Hero>

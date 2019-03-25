@@ -24,11 +24,11 @@ code {
   font-family: Lovelo;
 }
 
-.Hero {
+/* .Hero {
   background-image: url(./witch.gif);
   background-size: cover;
   background-repeat: no-repeat;
-}
+} */
 
 .Card {
   padding-left:20%;

@@ -60,7 +60,7 @@ class GameList extends Component {
     }
 
     renderGames = () => {
-      let { games } = this.state
+      let { games } = this.state;
       const { filterLists } = this.props;
 
       games = pickBy(games, Boolean);
@@ -77,9 +77,9 @@ class GameList extends Component {
         }
       });
 
-       return Object.values(games).filter(game => game).map(game => (
-         <Game key={game.appid} glossary={this.props.glossaries} {...game}/>
-       ))
+      return Object.values(games).filter(game => game).map(game => (
+        <Game key={game.appid} glossary={this.props.glossaries} {...game} />
+      ));
     }
 
     render() {
