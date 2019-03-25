@@ -3,25 +3,26 @@ import qs from 'qs';
 
 const paramsSerializer = params => qs.stringify(params, { indices: false });
 
-const resToData = res => res.data;
-
-export function getPlayers(...steamIds) {
-  return axios.get('/api/players', {
+export async function getPlayers(...steamIds) {
+  const res = await axios.get('/api/players', {
     params: { steamIds },
     paramsSerializer,
-  })
-    .then(resToData);
+  });
+
+  return res.data;
 }
 
-export function getGames(...appIds) {
-  return axios.get('/api/games', {
+export async function getGames(...appIds) {
+  const res = await axios.get('/api/games', {
     params: { appIds },
     paramsSerializer,
-  })
-    .then(resToData);
+  });
+
+  return res.data;
 }
 
-export function getGlossaries() {
-  return axios.get('/api/glossaries')
-    .then(resToData);
+export async function getGlossaries() {
+  const res = await axios.get('/api/glossaries');
+
+  return res.data;
 }
