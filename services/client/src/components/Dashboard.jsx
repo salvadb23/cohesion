@@ -85,7 +85,7 @@ class Dashboard extends Component {
     // For use in button
     genGameList = () => {
       this.setState((state) => {
-        const games = intersection([], ...Object.values(state.players).map(p => p.games));
+        const games = intersection(...Object.values(state.players).map(p => p.games));
         return { games };
       });
     }
