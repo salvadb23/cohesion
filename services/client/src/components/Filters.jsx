@@ -27,6 +27,7 @@ const margin = {
 
 const field = {
   padding: '10px',
+  marginRight: '5px',
 };
 
 function Filters(props) {

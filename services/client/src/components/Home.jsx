@@ -8,8 +8,7 @@ import {
 import '../App.css';
 
 const size = {
-  backgroundColor: '#08C8F6',
-  backgroundImage: 'hsl(217, 71%, 53%)',
+  backgroundColor: 'rgb(32, 48, 110)',
 };
 
 const TitleFontSize = {

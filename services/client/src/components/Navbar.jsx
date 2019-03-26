@@ -2,6 +2,8 @@ import React, { Component } from 'react';
 import { Navbar, NavbarEnd, Button } from 'bloomer';
 // import { CopyToClipboard } from 'react-copy-to-clipboard';
 import copyToClipboard from 'copy-to-clipboard';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faClipboard } from '@fortawesome/free-solid-svg-icons';
 import '../App.css';
 
 const styles = {
@@ -9,7 +11,7 @@ const styles = {
   position: 'fixed',
   width: '100vw',
   height: '55px',
-  backgroundColor: 'hsl(217, 71%, 53%)',
+  backgroundColor: 'rgb(32, 48, 110)',
   display: 'flex',
   alignItems: 'center',
   justifyContent: 'space-between',
@@ -56,7 +58,7 @@ class Navigation extends Component {
             onClick={this.handleClickCopy}
             disabled={copied}
           >
-            { copied ? 'Copied' : 'Share URL' }
+            { copied ? 'Copied' : <FontAwesomeIcon icon={faClipboard} /> }
           </Button>
         </NavbarEnd>
       </Navbar>

@@ -11,7 +11,7 @@ import '../App.css';
 const size = {
   paddingLeft: 'calc(10px + 2vw)',
   paddingRight: 'calc(10px + 2vw)',
-  width: '70% !important',
+  width: '400px',
   height: 'max-content',
   margin: 'auto',
   marginBottom: '15px',
@@ -19,9 +19,9 @@ const size = {
   position: 'relative',
 };
 
-// const content = {
-//   paddingBottom: '0px',
-// };
+const content = {
+  marginBottom: '0px',
+};
 
 const padding = {
   paddingLeft: '15px',
@@ -52,7 +52,7 @@ function ProfileCard(props) {
             </Subtitle>
           </MediaContent>
         </Media>
-        <Content>
+        <Content style={content}>
           <strong>Total Games: </strong>
           {games}
           <br />

@@ -34,13 +34,6 @@
   padding: 10px;
 }
 
-@media only screen and (max-width: 1200px) {
-  .Card {
-    width: 400px;
-  }
-}
-
-
 @keyframes App-logo-spin {
   from {
     transform: rotate(0deg);
