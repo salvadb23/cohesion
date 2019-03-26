@@ -1,0 +1,23 @@
+version: '3'
+services:
+  client:
+    image: registry.gitlab.com/cohesion-app/client
+    ports:
+      - '3000:80'
+    depends_on:
+      - server
+    environment:
+      - PROXY_URL=http://server:80
+  server:
+    image: registry.gitlab.com/cohesion-app/server
+    depends_on:
+      - mongo
+    environment:
+      - MONGODB_URI=mongodb://mongo:27017/cohesion
+      - PORT=80
+      - STEAM_API_KEY
+      - IGDB_API_KEY
+  mongo:
+    image: mvertes/alpine-mongo
+    volumes:
+      - ./data:/data/db
