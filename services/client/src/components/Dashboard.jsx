@@ -47,7 +47,12 @@ class Dashboard extends Component {
     };
 
     async componentDidMount() {
-      const glossaries = await api.getGlossaries();
+      let glossaries = JSON.parse(localStorage.getItem('glossaries'));
+
+      if (!glossaries) {
+        glossaries = await api.getGlossaries();
+        localStorage.setItem('glossaries', JSON.stringify(glossaries));
+      }
 
       const { location: { search } } = this.props;
 
