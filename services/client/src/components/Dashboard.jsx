@@ -6,6 +6,7 @@ import styled from 'styled-components';
 import intersection from 'lodash/intersection';
 import omit from 'lodash/omit';
 import pickBy from 'lodash/pickBy';
+import isEmpty from 'lodash/isEmpty';
 import qs from 'qs';
 
 import ProfileList from './ProfileContainer';
@@ -48,28 +49,37 @@ class Dashboard extends Component {
     async componentDidMount() {
       const glossaries = await api.getGlossaries();
 
-      // Generate default filters as false.
-      const filters = Object.entries(glossaries).reduce((prev, [glossName, gloss]) => (
+      const { location: { search } } = this.props;
+
+      // Default arrays to be empty
+      const filterLists = Object.keys(glossaries)
+        .reduce((prev, cat) => (
+          { ...prev, [cat]: [] }
+        ), {});
+
+      let players;
+      if (search) {
+        let queryFilters;
+        ({ players, ...queryFilters } = qs.parse(search, { ignoreQueryPrefix: true }));
+
+        Object.assign(filterLists, queryFilters);
+      }
+
+      // Generate filters from lists in query
+      const filters = Object.entries(glossaries).reduce((prev, [cat, gloss]) => (
         {
           ...prev,
-          [glossName]: Object.keys(gloss).reduce((prevDef, id) => (
-            { ...prevDef, [id]: false }
+          [cat]: Object.keys(gloss).reduce((prevDef, id) => (
+            { ...prevDef, [id]: filterLists[cat].includes(id) }
           ), {}),
         }
       ), {});
 
-      this.setState({ glossaries, filters });
-
-      const { location: { search } } = this.props;
-
-      if (search) {
-        const { players } = qs.parse(search, { ignoreQueryPrefix: true });
-
+      this.setState({ glossaries, filters }, () => {
         if (players) {
-          await this.addPlayers(players);
-          this.genGameList();
+          this.addPlayers(players);
         }
-      }
+      });
     }
 
     addPlayers = async (...ids) => {
@@ -77,24 +87,33 @@ class Dashboard extends Component {
 
       this.setState(state => (
         { players: { ...state.players, ...newPlayers } }
-      ));
-      this.updateUrl();
+      ), () => {
+        this.updateUrl();
+        this.genGameList();
+      });
     }
 
     removePlayers = (...ids) => {
       this.setState(state => (
         { players: omit(state.players, ids) }
-      ));
-      this.updateUrl();
-      this.genGameList();
+      ), () => {
+        this.updateUrl();
+        this.genGameList();
+      });
     }
 
     updateUrl = () => {
-      const { players } = this.state;
+      let { players } = this.state;
       const { history } = this.props;
 
+      players = Object.keys(players);
+      const filters = pickBy(this.genFilterLists(), list => !isEmpty(list));
+
       history.push({
-        search: qs.stringify({ players: Object.keys(players) }, { arrayFormat: 'brackets' }),
+        search: `?${qs.stringify({
+          players,
+          ...filters,
+        }, { arrayFormat: 'brackets' })}`,
       });
     }
 
@@ -105,6 +124,8 @@ class Dashboard extends Component {
         const { [id]: val } = catFilters;
 
         return { filters: { ...filters, [category]: { ...catFilters, [id]: !val } } };
+      }, () => {
+        this.updateUrl();
       });
     }
 
@@ -129,7 +150,7 @@ class Dashboard extends Component {
         players, glossaries, games, filters,
       } = this.state;
       const {
-        addPlayers, removePlayers, genGameList, toggleFilter,
+        addPlayers, removePlayers, toggleFilter,
       } = this;
 
       return (
@@ -141,7 +162,6 @@ class Dashboard extends Component {
                 players,
                 addPlayers,
                 removePlayers,
-                genGameList,
                 glossaries,
                 filters,
                 toggleFilter,
