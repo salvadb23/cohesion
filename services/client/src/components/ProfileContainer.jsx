@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 
-import { Field, Input, Button } from 'bloomer';
+import { Field, Input } from 'bloomer';
 import styled from 'styled-components';
 
 import { handleInputChange } from 'react-helpers';
@@ -33,7 +33,6 @@ class ProfileList extends Component {
       // TODO: Add specificity to player objects
       players: PropTypes.objectOf(PropTypes.object).isRequired,
       addPlayers: PropTypes.func.isRequired,
-      genGameList: PropTypes.func.isRequired,
       glossaries: PropTypes.objectOf(PropTypes.object).isRequired,
       filters: PropTypes.objectOf(PropTypes.object).isRequired,
       toggleFilter: PropTypes.func.isRequired,
@@ -75,7 +74,7 @@ class ProfileList extends Component {
     render() {
       const { player } = this.state;
       const {
-        genGameList, glossaries, filters, toggleFilter,
+        glossaries, filters, toggleFilter,
       } = this.props;
 
       return (
@@ -92,7 +91,6 @@ class ProfileList extends Component {
                 onChange={this.handleChange}
                 onKeyDown={this.handleEnterKey}
               />
-              <Button onClick={() => genGameList()}>Load</Button>
             </Field>
           </InputContainer>
           <Filters {...{ glossaries, filters, toggleFilter }} />
