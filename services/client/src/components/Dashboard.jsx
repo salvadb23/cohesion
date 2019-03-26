@@ -77,7 +77,7 @@ class Dashboard extends Component {
 
       this.setState({ glossaries, filters }, () => {
         if (players) {
-          this.addPlayers(players);
+          this.addPlayers(...players);
         }
       });
     }
