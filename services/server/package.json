@@ -25,12 +25,14 @@
   "homepage": "https://gitlab.com/cohesion-app/server#readme",
   "dependencies": {
     "apicalypse": "0.0.6",
+    "bluebird": "^3.5.3",
     "body-parser": "^1.18.3",
     "dotenv": "^6.2.0",
     "express": "^4.16.4",
     "express-async-handler": "^1.1.4",
     "lodash": "^4.17.11",
     "mongoose": "^5.4.19",
+    "redis": "^2.8.0",
     "steam-wrapper": "gitlab:dacio/steam-wrapper"
   },
   "devDependencies": {
