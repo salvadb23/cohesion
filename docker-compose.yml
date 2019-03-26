@@ -3,7 +3,7 @@ services:
   client:
     image: registry.gitlab.com/cohesion-app/client
     ports:
-      - '3000:80'
+      - '${PORT:-3000}:80'
     depends_on:
       - server
     environment:
