@@ -15,7 +15,7 @@ const size = {
   width: '70%',
   margin: 'auto',
   marginTop: '30px',
-  minWidth: '400px',
+  minWidth: '300px',
   marginBottom: '50px',
   borderRadius: '4px',
 };
