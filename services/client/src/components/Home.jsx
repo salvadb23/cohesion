@@ -43,7 +43,7 @@ export default function Home() {
       <HeroBody>
         <Container hasTextAlign="centered">
           <Title className="Title" style={TitleFontSize}>COHESION</Title>
-          <Title style={SubFontSize}>connecting gamers, one game at a time.</Title>
+          <Title style={SubFontSize}>game with your friends</Title>
           <Link style={link} to="/dashboard">Get Started</Link>
         </Container>
       </HeroBody>

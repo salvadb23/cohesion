@@ -7,8 +7,6 @@ import difference from 'lodash/difference';
 import omit from 'lodash/omit';
 import pick from 'lodash/pick';
 import pickBy from 'lodash/pickBy';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faArrowLeft } from '@fortawesome/free-solid-svg-icons';
 
 import Game from './Game';
 
@@ -18,16 +16,6 @@ const GameContainer = styled.div`
     padding-top: 101px;
     grid-area: g;
     overflow: auto;
-`;
-
-const space = {
-  marginRight: '8px',
-};
-
-const Message = styled.div`
-    font-weight: bold;
-    font-size: 20px;
-    padding-bottom: 80px;
 `;
 
 class GameList extends Component {
@@ -100,17 +88,6 @@ class GameList extends Component {
     }
 
     render() {
-      const { games } = this.state;
-      if (Object.values(games).length === 0) {
-        return (
-          <GameContainer>
-            <Message>
-              <FontAwesomeIcon icon={faArrowLeft} style={space} />
-                ENTER A STEAM ID/URL TO GET STARTED!
-            </Message>
-          </GameContainer>
-        );
-      }
       return (
         <GameContainer>
           { this.renderGames() }
