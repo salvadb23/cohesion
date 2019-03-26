@@ -22,7 +22,12 @@
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
-    "lint": "eslint . --ext .jsx,.js"
+    "lint": "eslint . --ext .jsx,.js",
+    "docker:build": "docker build -t $npm_package_config_image_repo:latest -t $npm_package_config_image_repo:$npm_package_version .",
+    "docker:publish": "docker push $npm_package_config_image_repo"
+  },
+  "config": {
+    "image_repo": "registry.gitlab.com/cohesion-app/client"
   },
   "browserslist": [
     ">0.2%",
