@@ -3,6 +3,8 @@ import { Route, BrowserRouter as Router } from 'react-router-dom';
 import Home from './components/Home';
 import Dashboard from './components/Dashboard';
 import './App.css';
+import 'normalize.css';
+import 'bulma/css/bulma.css';
 
 function App() {
   return (
