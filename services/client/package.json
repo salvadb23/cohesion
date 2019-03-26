@@ -5,12 +5,12 @@
   "dependencies": {
     "axios": "^0.18.0",
     "bloomer": "^0.6.5",
+    "copy-to-clipboard": "^3.0.8",
     "lodash": "^4.17.11",
     "moment": "^2.24.0",
     "prop-types": "^15.7.2",
     "qs": "^6.7.0",
     "react": "^16.8.4",
-    "react-copy-to-clipboard": "^5.0.1",
     "react-dom": "^16.8.4",
     "react-helpers": "https://gitlab.com/dacio/react-helpers.git",
     "react-moment": "^0.8.4",

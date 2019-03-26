@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 
 import styled from 'styled-components';
 
@@ -35,6 +36,15 @@ class Dashboard extends Component {
       games: [],
     };
 
+    static propTypes = {
+      location: PropTypes.shape({
+        search: PropTypes.string,
+      }).isRequired,
+      history: PropTypes.shape({
+        push: PropTypes.func.isRequired,
+      }).isRequired,
+    };
+
     async componentDidMount() {
       const glossaries = await api.getGlossaries();
 
@@ -50,11 +60,15 @@ class Dashboard extends Component {
 
       this.setState({ glossaries, filters });
 
-      const { players } = qs.parse(document.location.search, { ignoreQueryPrefix: true });
+      const { location: { search } } = this.props;
 
-      if (players) {
-        await this.addPlayers(players);
-        this.genGameList();
+      if (search) {
+        const { players } = qs.parse(search, { ignoreQueryPrefix: true });
+
+        if (players) {
+          await this.addPlayers(players);
+          this.genGameList();
+        }
       }
     }
 
@@ -77,12 +91,11 @@ class Dashboard extends Component {
 
     updateUrl = () => {
       const { players } = this.state;
+      const { history } = this.props;
 
-      window.history.pushState(
-        '',
-        '',
-        `?${qs.stringify({ players: Object.keys(players) }, { arrayFormat: 'brackets' })}`,
-      );
+      history.push({
+        search: qs.stringify({ players: Object.keys(players) }, { arrayFormat: 'brackets' }),
+      });
     }
 
     toggleFilter = (category, id) => {
