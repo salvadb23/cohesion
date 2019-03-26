@@ -34,7 +34,7 @@ function Filters(props) {
   const { filters, glossaries, toggleFilter } = props;
 
   return (
-    <Card style={size}>
+    <Card style={size} className="filter">
       {
         Object.entries(filters).map(([cat, catFilters]) => {
           const { [cat]: glossary } = glossaries;
