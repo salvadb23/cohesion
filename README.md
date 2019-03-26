@@ -4,13 +4,8 @@ This is the easy way to get a local version up and running.
 
 # Usage
 
-1. [Install](https://www.docker.com/get-started/) Docker
-2. [Get](https://steamcommunity.com/dev/apikey) your Steam API key
-3. [Get](https://api.igdb.com/) your IGDB API key
-4. Create an .env file with your keys from before inserted below (without brackets)
-```env
-STEAM_API_KEY=[STEAM KEY]
-IGDB_API_KEY=[IGDB KEY]
-```
-5. Run `docker-compose up`
-6. [View](http://localhost:3000)
+1. Install [Docker](https://www.docker.com/get-started/) and [Docker Compose](https://docs.docker.com/compose/install/)
+1. Get your [Steam API key](https://steamcommunity.com/dev/apikey) and [IGDB API key](https://api.igdb.com/)
+1. run `cp .env.example .env` open `.env` and fill in your keys
+1. Run `docker-compose up`
+1. Go to http://localhost:3000
