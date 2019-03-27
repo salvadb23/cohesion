@@ -11,18 +11,14 @@ const cache = require('../utils/redis');
 const router = express.Router();
 const Steam = require('../utils/steam');
 
-// Force Redis to store false for null and convert back; null is expected for no response
-const convertFalsy = forced => v => v || forced;
-const convFalsyNull = convertFalsy(null); // Convert cache to wrapper
-const convFalsyFalse = convertFalsy(false); // Wrapper to cache
+const { falseToNull, nullToFalse } = require('../utils/conversions')
 
 const getLibraries = async (ids) => {
   // Get cached values
   const cachedLibs = zipObject(
     ids,
     (await cache.mgetAsync(...ids.map(id => `/libraries/${id}`)))
-      .map(JSON.parse)
-      .map(convFalsyNull),
+      .map(JSON.parse),
   );
 
   // Get from wrapper new for all missing
@@ -40,12 +36,12 @@ const getLibraries = async (ids) => {
   if (!isEmpty(newLibs)) {
     await cache.msetAsync(
       ...Object.entries(newLibs)
-        .map(([id, games]) => [`/libraries/${id}`, JSON.stringify(convFalsyFalse(games))])
+        .map(([id, games]) => [`/libraries/${id}`, JSON.stringify(nullToFalse(games))])
         .flat(),
     );
   }
 
-  return { ...cachedLibs, ...newLibs };
+  return { ...mapValues(cachedLibs, falseToNull), ...newLibs };
 };
 
 const getProfiles = async (ids) => {
@@ -53,8 +49,7 @@ const getProfiles = async (ids) => {
   const cachedProfs = zipObject(
     ids,
     (await cache.mgetAsync(...ids.map(id => `/profiles/${id}`)))
-      .map(JSON.parse)
-      .map(convFalsyNull),
+      .map(JSON.parse),
   );
 
   // Get from wrapper new for all missing
@@ -68,12 +63,12 @@ const getProfiles = async (ids) => {
   if (!isEmpty(newProfs)) {
     await cache.msetAsync(
       ...Object.entries(newProfs)
-        .map(([id, profile]) => [`/profiles/${id}`, JSON.stringify(convFalsyFalse(profile))])
+        .map(([id, profile]) => [`/profiles/${id}`, JSON.stringify(nullToFalse(profile))])
         .flat(),
     );
   }
 
-  return { ...cachedProfs, ...newProfs };
+  return { ...mapValues(cachedProfs, falseToNull), ...newProfs };
 };
 
 router.get('/', asyncHandler(async (req, res) => {

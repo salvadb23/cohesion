@@ -9,18 +9,9 @@ const mapValues = require('lodash/mapValues');
 // const Game = require('../models/game');
 const cache = require('../utils/redis');
 const IGDB = require('../utils/igdb');
+const { nullToFalse, falseToNull } = require('../utils/conversions');
 
 const router = express.Router();
-
-const convertVal = (source, dest) => (v) => {
-  if (v === source) {
-    return dest;
-  }
-  return v;
-};
-
-const falseToNull = convertVal(false, null);
-const nullToFalse = convertVal(null, false);
 
 const batchSize = 10;
 
