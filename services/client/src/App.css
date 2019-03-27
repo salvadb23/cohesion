@@ -28,6 +28,13 @@
   font-size: 25px;
   font-weight: bold;
   padding-top: 5px;
+  text-decoration: none;
+  color: white;
+}
+
+.cohesion:hover {
+  color: white;
+  text-decoration: underline;
 }
 
 .checkbox {

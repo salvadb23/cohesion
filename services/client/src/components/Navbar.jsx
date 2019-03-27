@@ -1,10 +1,12 @@
 import React, { Component } from 'react';
-import { Navbar, NavbarEnd, Button } from 'bloomer';
-// import { CopyToClipboard } from 'react-copy-to-clipboard';
+
 import copyToClipboard from 'copy-to-clipboard';
+
+import { Navbar, NavbarEnd, Button } from 'bloomer';
+import { Link } from 'react-router-dom';
+
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faClipboard } from '@fortawesome/free-solid-svg-icons';
-import '../App.css';
 
 const styles = {
   color: 'white',
@@ -24,8 +26,6 @@ const marginLeft = {
 const marginRight = {
   marginRight: '20px',
 };
-
-// const url = window.location.href;
 
 class Navigation extends Component {
   state = {
@@ -47,11 +47,8 @@ class Navigation extends Component {
 
     return (
       <Navbar style={styles}>
-        <div className="cohesion" style={marginLeft}>COHESION</div>
+        <Link to="/" className="cohesion" style={marginLeft}>COHESION</Link>
         <NavbarEnd>
-          {/* <CopyToClipboard text={(() => window.location.href)()}>
-            <Button style={marginRight} type="button">Share URL</Button>
-          </CopyToClipboard> */}
           <Button
             style={marginRight}
             type="button"
