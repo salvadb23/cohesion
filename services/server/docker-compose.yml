@@ -4,6 +4,13 @@ services:
     build: .
     ports:
       - "${PORT:-3000}:3000"
+    depends_on:
+      - redis
     environment:
       - STEAM_API_KEY
       - IGDB_API_KEY
+      - REDIS_URL=redis://redis
+  redis:
+    image: redis:alpine
+    volumes:
+      - ./data:/data
