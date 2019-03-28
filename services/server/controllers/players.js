@@ -13,6 +13,32 @@ const Steam = require('../utils/steam');
 
 const { falseToNull, nullToFalse } = require('../utils/conversions')
 
+const getIds = async (inputs) => {
+  const cachedIns = zipObject(
+    inputs,
+    await cache.mgetAsync(...inputs.map(i => `/ids/${i}`)),
+  );
+
+  const missingIns = Object.entries(cachedIns)
+    .filter(([, id]) => id === null)
+    .map(([input]) => input);
+
+  const newIns = zipObject(
+    missingIns,
+    await Promise.all(missingIns.map(input => Steam.GetSteamId64(input))),
+  );
+
+  if (!isEmpty(newIns)) {
+    await cache.msetAsync(
+      ...Object.entries(newIns)
+        .map(([input, id]) => [`/ids/${input}`, nullToFalse(id)])
+        .flat(),
+    );
+  }
+
+  return Object.values({ ...mapValues(cachedIns, falseToNull), ...newIns });
+};
+
 const getLibraries = async (ids) => {
   // Get cached values
   const cachedLibs = zipObject(
@@ -79,7 +105,7 @@ router.get('/', asyncHandler(async (req, res) => {
   }
 
   // Convert URLs, IDs, and vanity names
-  ids = (await Promise.all(ids.map(id => Steam.GetSteamId64(id)))).filter(Boolean);
+  ids = (await getIds(ids)).filter(Boolean);
 
   const [libraries, profiles] = await Promise.all([
     getLibraries(ids),
