@@ -3,20 +3,20 @@ const asyncHandler = require('express-async-handler');
 
 const zipObject = require('lodash/zipObject');
 const isEmpty = require('lodash/isEmpty');
-const merge = require('lodash/merge');
 const mapValues = require('lodash/mapValues');
+const merge = require('lodash/merge');
 
+const Steam = require('../utils/steam');
 const cache = require('../utils/redis');
+const { falseToNull, nullToFalse } = require('../utils/conversions');
 
 const router = express.Router();
-const Steam = require('../utils/steam');
-
-const { falseToNull, nullToFalse } = require('../utils/conversions')
 
 const getIds = async (inputs) => {
   const cachedIns = zipObject(
     inputs,
-    await cache.mgetAsync(...inputs.map(i => `/ids/${i}`)),
+    (await cache.mgetAsync(...inputs.map(i => `/ids/${i}`)))
+      .map(JSON.parse),
   );
 
   const missingIns = Object.entries(cachedIns)
@@ -31,7 +31,7 @@ const getIds = async (inputs) => {
   if (!isEmpty(newIns)) {
     await cache.msetAsync(
       ...Object.entries(newIns)
-        .map(([input, id]) => [`/ids/${input}`, nullToFalse(id)])
+        .map(([input, id]) => [`/ids/${input}`, JSON.stringify(nullToFalse(id))])
         .flat(),
     );
   }

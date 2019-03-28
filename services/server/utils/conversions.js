@@ -8,7 +8,6 @@ const convertVal = (source, dest) => (v) => {
 const falseToNull = convertVal(false, null);
 const nullToFalse = convertVal(null, false);
 
-
 module.exports = {
   falseToNull,
   nullToFalse,
