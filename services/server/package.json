@@ -1,6 +1,6 @@
 {
   "name": "@cohesion/server",
-  "version": "1.1.0",
+  "version": "1.1.1",
   "description": "Partner project for [@MakeSchool](https://github.com/MakeSchool)'s SPD 1.2 Class",
   "main": "index.js",
   "scripts": {
