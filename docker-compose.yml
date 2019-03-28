@@ -11,13 +11,13 @@ services:
   server:
     image: registry.gitlab.com/cohesion-app/server
     depends_on:
-      - mongo
+      - redis
     environment:
-      - MONGODB_URI=mongodb://mongo:27017/cohesion
+      - REDIS_URL=redis://redis
       - PORT=80
       - STEAM_API_KEY
       - IGDB_API_KEY
-  mongo:
-    image: mvertes/alpine-mongo
+  redis:
+    image: redis:alpine
     volumes:
       - ./data:/data/db
