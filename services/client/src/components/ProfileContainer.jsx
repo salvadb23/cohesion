@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import { Field, Input } from 'bloomer';
 import styled from 'styled-components';
 
-import { handleInputChange } from 'react-helpers';
+import { handleInputChange } from '@dacio/react-helpers';
 
 import ProfileCard from './ProfileCard';
 import Filters from './Filters';

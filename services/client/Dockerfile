@@ -4,12 +4,8 @@ FROM node:alpine
 WORKDIR /cohesion/client
 
 COPY package.json yarn.lock ./
-# react-helpers depedency is on GitLab, remove when released on NPM
-RUN apk add --no-cache --virtual build-deps git
 ENV NODE_ENV production
 RUN yarn install
-# Cleanup L8
-RUN apk del build-deps
 
 COPY public public
 COPY src src
