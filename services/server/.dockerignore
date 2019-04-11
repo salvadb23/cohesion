@@ -1,9 +1,10 @@
 *
 
 # -- Whitelist --
-!controllers
-!utils
 !package.json
 !package-lock.json
+!utils
+!controllers
+!index.js
 
 # -- Blacklist --
