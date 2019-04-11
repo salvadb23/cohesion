@@ -1,9 +1,9 @@
-# Directories
-node_modules/
+*
 
-# Files
-.env
-.eslintrc.json
-.gitignore
-LICENSE
-README.md
+# -- Whitelist --
+!controllers
+!utils
+!package.json
+!package-lock.json
+
+# -- Blacklist --

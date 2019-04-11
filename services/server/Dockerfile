@@ -1,9 +1,9 @@
-FROM node:alpine
+FROM node:11.13.0-alpine
 
-WORKDIR /cohesion/server
+WORKDIR /src/server
+ENV NODE_ENV production
 
 COPY package.json package-lock.json ./
-ENV NODE_ENV production
 RUN npm install
 
 COPY . ./
