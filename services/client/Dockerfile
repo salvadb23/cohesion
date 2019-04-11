@@ -1,22 +1,20 @@
 # Build
-FROM node:alpine
+FROM node:11.13.0-alpine
 
-WORKDIR /cohesion/client
+WORKDIR /src/client
+ENV NODE_ENV=production SKIP_PREFLIGHT_CHECK=true
 
 COPY package.json yarn.lock ./
-ENV NODE_ENV production
 RUN yarn install
 
 COPY public public
 COPY src src
-ENV SKIP_PREFLIGHT_CHECK true
 RUN yarn build
 
-# SERVE
-FROM nginx:alpine
+# Serve
+FROM nginx:1.15.11-alpine
 
-COPY --from=0 /cohesion/client/build /usr/share/nginx/html
-COPY cohesion.template /etc/nginx/conf.d/cohesion.template
-ENV PORT 80
+COPY --from=0 /src/client/build /usr/share/nginx/html
+COPY default.conf /etc/nginx/conf.d/default.conf
 
-CMD sh -c "envsubst '\${PORT} \${PROXY_URL}' < /etc/nginx/conf.d/cohesion.template > /etc/nginx/conf.d/default.conf && exec nginx -g 'daemon off;'"
+EXPOSE 80
