@@ -2,10 +2,10 @@ FROM node:11.13.0-alpine
 
 WORKDIR /usr/src/app
 
-COPY package.json package-lock.json ./
+COPY package.json yarn.lock ./
 ENV NODE_ENV=development
-RUN npm install -Dq nodemon
+RUN yarn install
 
 COPY . ./
 
-CMD PORT=80 npx nodemon
+CMD PORT=80 yarn run nodemon
