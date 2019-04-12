@@ -11,7 +11,7 @@
     "docker:publish": "docker push $npm_package_config_image_repo"
   },
   "config": {
-    "image_repo": "registry.gitlab.com/cohesion-app/server"
+    "image_repo": "dacio/cohesion-server"
   },
   "repository": {
     "type": "git",
