@@ -1,16 +1,21 @@
 version: '3'
 services:
   web:
-    build: .
+    build:
+      context: .
+      dockerfile: Dockerfile.dev
     ports:
-      - "${PORT:-3000}:3000"
+      - "${PORT:-3000}:80"
     depends_on:
-      - redis
+      - cache
+    env_file: .env
     environment:
-      - STEAM_API_KEY
-      - IGDB_API_KEY
-      - REDIS_URL=redis://redis
-  redis:
-    image: redis:alpine
+      - REDIS_URL=redis://cache
+    volumes:
+      - ./index.js:/usr/src/app/index.js
+      - ./controllers:/usr/src/app/controllers
+      - ./utils:/usr/src/app/utils
+  cache:
+    image: redis:5.0.4-alpine
     volumes:
       - ./data:/data

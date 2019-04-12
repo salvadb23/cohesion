@@ -1,6 +1,6 @@
 
-# Created by https://www.gitignore.io/api/node
-# Edit at https://www.gitignore.io/?templates=node
+# Created by https://www.gitignore.io/api/node,redis
+# Edit at https://www.gitignore.io/?templates=node,redis
 
 ### Node ###
 # Logs
@@ -9,6 +9,10 @@ logs
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
+lerna-debug.log*
+
+# Diagnostic reports (https://nodejs.org/api/report.html)
+report.[0-9]*.[0-9]*.[0-9]*.[0-9]*.json
 
 # Runtime data
 pids
@@ -84,6 +88,9 @@ typings/
 # DynamoDB Local files
 .dynamodb/
 
-# End of https://www.gitignore.io/api/node
+### Redis ###
+# Ignore redis binary dump (dump.rdb) files
 
-data/
+*.rdb
+
+# End of https://www.gitignore.io/api/node,redis
