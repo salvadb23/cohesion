@@ -7,8 +7,10 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "node index.js",
     "lint": "eslint .",
-    "docker:build": "docker build -t $npm_package_config_image_repo:latest -t $npm_package_config_image_repo:$npm_package_version .",
-    "docker:publish": "docker push $npm_package_config_image_repo"
+    "docker:flags": "node docker-flags.js $npm_package_config_image_repo $npm_package_version",
+    "docker:build": "yarn --silent docker:flags | xargs docker build .",
+    "docker:push": "docker push $npm_package_config_image_repo",
+    "docker:publish": "yarn docker:build && yarn docker:push"
   },
   "config": {
     "image_repo": "dacio/cohesion-server"
