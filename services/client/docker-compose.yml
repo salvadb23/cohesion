@@ -1,8 +1,29 @@
 version: '3'
 services:
   web:
-    build: .
-    ports:
-      - "${PORT:-3000}:80"
+    build:
+      context: .
+      dockerfile: Dockerfile.dev
+    depends_on:
+      - server
     env_file:
       - .env
+      - .env.local
+    environment:
+      - PROXY_URL=http://server
+    volumes:
+      - ./src:/usr/src/app/src
+      - ./public:/usr/src/app/public
+    ports:
+      - "${PORT:-3000}:3000"
+  server:
+    image: dacio/cohesion-server:1.2.0
+    env_file: .env.server
+    environment:
+      - REDIS_URL=redis://cache
+    depends_on:
+      - cache
+  cache:
+    image: redis:5.0.4-alpine
+    volumes:
+      - ./data:/data
