@@ -8,4 +8,6 @@ RUN yarn install
 
 COPY . ./
 
+EXPOSE 80
+
 CMD PORT=80 yarn start
