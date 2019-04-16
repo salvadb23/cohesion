@@ -1,8 +1,5 @@
 version: '3'
 services:
-  server:
-    environment:
-      - NODE_ENV=development
   proxy:
     build: proxy
     depends_on:
