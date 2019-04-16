@@ -1,4 +1,5 @@
 version: '3'
+
 services:
   client:
     image: dacio/cohesion-client:1.1.0

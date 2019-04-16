@@ -1,0 +1,23 @@
+version: '3'
+
+services:
+  client:
+    labels:
+      traefik.enable: true
+      traefik.frontend.rule: Host:${DOMAIN:-cohesion.localhost}
+      traefik.docker.network: web
+    networks:
+      - default
+      - web
+  server:
+    labels:
+      traefik.enable: true
+      traefik.frontend.rule: Host:${DOMAIN:-cohesion.localhost};PathPrefixStrip:/api
+      traefik.docker.network: web
+    networks:
+      - default
+      - web
+
+networks:
+  web:
+    external: web
