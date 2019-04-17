@@ -4,6 +4,7 @@ services:
   client:
     labels:
       traefik.enable: 'true'
+      traefik.port: '80'
       traefik.frontend.rule: Host:${DOMAIN:-cohesion.localhost}
     networks:
       - default
@@ -11,6 +12,7 @@ services:
   server:
     labels:
       traefik.enable: 'true'
+      traefik.port: '80'
       traefik.frontend.rule: Host:${DOMAIN:-cohesion.localhost};PathPrefixStrip:/api
     networks:
       - default
