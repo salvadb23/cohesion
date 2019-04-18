@@ -5,18 +5,14 @@ services:
     image: dacio/cohesion-client:1.1.0
     depends_on:
       - server
-    env_file: client.env
   server:
     image: dacio/cohesion-server:1.2.0
     depends_on:
-      - redis
+      - cache
     env_file: server.env
     environment:
-      - REDIS_URL=redis://redis
-  redis:
+      - REDIS_URL=redis://cache
+  cache:
     image: redis:5.0.4-alpine
     volumes:
-      - cache:/data/db
-
-volumes:
-  cache:
+      - ./data/db:/data/db
