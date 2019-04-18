@@ -2,6 +2,7 @@ version: '3'
 
 services:
   client:
+    restart: always
     labels:
       traefik.enable: 'true'
       traefik.port: '80'
@@ -10,6 +11,7 @@ services:
       - default
       - web
   server:
+    restart: always
     labels:
       traefik.enable: 'true'
       traefik.port: '80'
@@ -17,6 +19,8 @@ services:
     networks:
       - default
       - web
+  cache:
+    restart: always
 
 networks:
   web:
