@@ -16,6 +16,7 @@ const GameContainer = styled.div`
     padding-top: 101px;
     grid-area: g;
     overflow: auto;
+    background-color: #121212;
 `;
 
 class GameList extends Component {

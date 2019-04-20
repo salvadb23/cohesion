@@ -17,6 +17,9 @@ const size = {
   marginBottom: '15px',
   borderRadius: '4px',
   position: 'relative',
+  color: 'white',
+  backgroundColor: 'rgb(36,36,36)',
+  border: '1px solid rgb(52, 53, 54)',
 };
 
 const content = {
@@ -46,8 +49,8 @@ function ProfileCard(props) {
             <Image isSize="48x48" src={avatar} />
           </MediaLeft>
           <MediaContent>
-            <Title isSize={4}>{ name }</Title>
-            <Subtitle isSize={6}>
+            <Title style={{ color: 'white' }} isSize={4}>{ name }</Title>
+            <Subtitle style={{ color: 'white' }} isSize={6}>
               { `@${alias}` }
             </Subtitle>
           </MediaContent>

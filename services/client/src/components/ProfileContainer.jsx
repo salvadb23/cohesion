@@ -13,7 +13,8 @@ const ProfileContainer = styled.div`
     padding-top: 100px;
     grid-area: p;
     overflow: auto;
-    background-color: #fbfbfb;
+    background-color: #121212;
+    border-right: 1px solid rgb(52, 53, 54);
 `;
 const padding = {
   textAlign: 'center',

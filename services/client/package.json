@@ -17,6 +17,7 @@
     "prop-types": "^15.7.2",
     "qs": "^6.7.0",
     "react": "^16.8.4",
+    "react-collapsible": "^2.6.0",
     "react-dom": "^16.8.4",
     "react-moment": "^0.8.4",
     "react-router": "^5.0.0",

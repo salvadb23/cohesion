@@ -40,7 +40,10 @@ class Dashboard extends Component {
     static propTypes = {
       location: PropTypes.shape({
         search: PropTypes.string,
-      }).isRequired,
+        state: PropTypes.shape({
+          player: PropTypes.string,
+        }),
+      }),
       history: PropTypes.shape({
         push: PropTypes.func.isRequired,
       }).isRequired,
@@ -48,6 +51,11 @@ class Dashboard extends Component {
 
     async componentDidMount() {
       let glossaries = JSON.parse(localStorage.getItem('glossaries'));
+      const { location } = this.props;
+
+      if (location.state !== undefined) {
+        this.addPlayers(location.state.player);
+      }
 
       if (!glossaries) {
         glossaries = await api.getGlossaries();
@@ -178,5 +186,13 @@ class Dashboard extends Component {
       );
     }
 }
+
+Dashboard.defaultProps = {
+  location: {
+    state: {
+      player: '',
+    },
+  },
+};
 
 export default Dashboard;

@@ -13,10 +13,11 @@ const styles = {
   position: 'fixed',
   width: '100vw',
   height: '55px',
-  backgroundColor: 'rgb(32, 48, 110)',
+  backgroundColor: 'rgb(36,36,36)',
   display: 'flex',
   alignItems: 'center',
   justifyContent: 'space-between',
+  borderBottom: '1px solid rgb(52, 53, 54)',
 };
 
 const marginLeft = {

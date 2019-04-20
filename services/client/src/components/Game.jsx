@@ -1,28 +1,31 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import '../index.css';
 
 import {
   Media, MediaLeft, Content, MediaContent,
 } from 'bloomer';
 
 const game = {
-  boxShadow: '0 2px 3px rgba(10, 10, 10, 0.1), 0 0 0 1px rgba(10, 10, 10, 0.1)',
+  border: '1px solid rgb(52, 53, 54)',
   borderRadius: '4px',
-  paddingBottom: '30px',
-  paddingTop: '20px',
+  // paddingBottom: '10px',
+  paddingTop: '0px',
   margin: 'auto',
-  marginBottom: '10px',
-  paddingLeft: '20px',
+  marginBottom: '15px',
+  // paddingLeft: '20px',
   width: '85%',
-  backgroundColor: 'white',
+  backgroundColor: 'rgb(36,36,36)',
+  color: 'white',
 };
 
 const img = {
   objectFit: 'contain',
   maxWidth: '100%',
   maxHeight: '100%',
-  width: 'auto',
-  height: 'auto',
+  width: '130px',
+  height: '130px',
+  backgroundPosition: 'bottom',
 };
 
 
@@ -38,33 +41,33 @@ function Game(props) { /* eslint-disable camelcase */
   );
 
   return (
-    <Media style={game}>
-      <MediaLeft>
-        { cover && (
-        <img
-          style={img}
-          alt="game cover"
-          src={`https://images.igdb.com/igdb/image/upload/t_thumb/${cover.image_id}.png`}
-        />
-        ) }
-      </MediaLeft>
-      <MediaContent>
-        <Content>
-          <p>
-            <strong>{name}</strong>
-            <br />
-            {/* {game_modes.length && glossary.gamse_modes[game_modes[0]].name} */}
-            { game_modes.map(mode => glossary.game_modes[mode].name).join(', ') }
-            <br />
-            <strong>Genres: </strong>
-            {genre.map(_genres => _genres).filter(_genre => _genre).join(', ')}
-            <br />
-            <strong>Themes: </strong>
-            {theme && theme.map(_themes => _themes).filter(_theme => _theme).join(', ')}
-          </p>
-        </Content>
-      </MediaContent>
-    </Media>
+    <a href="http://steam.com">
+      <Media style={game} className="Media">
+        <MediaLeft style={{ marginBottom: '-6px', backgroundPosition: 'top' }}>
+          <img
+            style={img}
+            alt="game cover"
+            src={cover.image_id ? `https://images.igdb.com/igdb/image/upload/t_thumb/${cover.image_id}.png` : `https://dummyimage.com/500x500/ffffff/000000&text=${name}`}
+          />
+        </MediaLeft>
+        <MediaContent style={{ padding: '12px' }}>
+          <Content>
+            <p className="p">
+              <strong className="gamename" style={{ fontSize: '20px' }}>{name}</strong>
+              <br />
+              {/* {game_modes.length && glossary.gamse_modes[game_modes[0]].name} */}
+              <i>{ game_modes.map(mode => glossary.game_modes[mode].name).join(', ') }</i>
+              <br />
+              <strong>Genres: </strong>
+              {genre.map(_genres => _genres).filter(_genre => _genre).join(', ')}
+              <br />
+              <strong>Themes: </strong>
+              {theme && theme.map(_themes => _themes).filter(_theme => _theme).join(', ')}
+            </p>
+          </Content>
+        </MediaContent>
+      </Media>
+    </a>
   );
 }
 
