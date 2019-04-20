@@ -1,9 +1,11 @@
-# Directories
-node_modules
-build
+*
 
-# Files
-README.md
-.gitignore
-.env*
+# -- Whitelist --
+!public
+!src
+!package.json
+!yarn.lock
+!default.conf
+
+# -- Blacklist --
 src/setupProxy.js

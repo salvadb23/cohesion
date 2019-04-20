@@ -1,6 +1,6 @@
 {
   "name": "@cohesion/client",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "private": true,
   "dependencies": {
     "@dacio/react-helpers": "^2.0.2",
@@ -31,11 +31,13 @@
     "test": "react-scripts test",
     "eject": "react-scripts eject",
     "lint": "eslint . --ext .jsx,.js",
-    "docker:build": "docker build -t $npm_package_config_image_repo:latest -t $npm_package_config_image_repo:$npm_package_version .",
-    "docker:publish": "docker push $npm_package_config_image_repo"
+    "docker:flags": "node docker-flags.js $npm_package_config_image_repo $npm_package_version",
+    "docker:build": "yarn --silent docker:flags | xargs docker build .",
+    "docker:push": "docker push $npm_package_config_image_repo",
+    "docker:publish": "yarn docker:build && yarn docker:push"
   },
   "config": {
-    "image_repo": "registry.gitlab.com/cohesion-app/client"
+    "image_repo": "dacio/cohesion-client"
   },
   "browserslist": [
     ">0.2%",
