@@ -8,6 +8,9 @@ import omit from 'lodash/omit';
 import pick from 'lodash/pick';
 import pickBy from 'lodash/pickBy';
 
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faSpinner } from '@fortawesome/free-solid-svg-icons';
+
 import Game from './Game';
 
 import * as api from '../api';
@@ -20,81 +23,106 @@ const GameContainer = styled.div`
 `;
 
 class GameList extends Component {
-    static propTypes = {
-      games: PropTypes.arrayOf(PropTypes.number).isRequired,
-      filterLists: PropTypes.objectOf(PropTypes.array).isRequired,
-      glossaries: PropTypes.objectOf(PropTypes.object).isRequired,
-    };
+  static propTypes = {
+    games: PropTypes.arrayOf(PropTypes.number).isRequired,
+    filterLists: PropTypes.objectOf(PropTypes.array).isRequired,
+    glossaries: PropTypes.objectOf(PropTypes.object).isRequired,
+  };
 
-    state = {
-      games: {},
-    };
+  state = {
+    games: {},
+    loading: true,
+  };
 
-    // TODO: Find alternative to setting state here
-    async componentDidUpdate(prevProps) { /* eslint-disable react/no-did-update-set-state */
-      const { games: oldGames } = prevProps;
-      const { games: curGames } = this.props;
 
-      if (oldGames !== curGames) {
-        const added = difference(curGames, oldGames);
-        const removed = difference(oldGames, curGames);
+  // TODO: Find alternative to setting state here
+  async componentDidUpdate(prevProps) { /* eslint-disable react/no-did-update-set-state */
+    const { games: oldGames } = prevProps;
+    const { games: curGames } = this.props;
+    // this.setState({ loading: true });
 
-        if (removed.length) {
-          this.setState(state => (
-            { games: omit(state.games, removed) }
-          ));
-        }
+    if (oldGames !== curGames) {
+      // this.setState({ loading: true });
+      const added = difference(curGames, oldGames);
+      const removed = difference(oldGames, curGames);
 
-        if (added.length) {
-          const defaults = Object.assign(...added.map(g => ({ [g]: false })));
+      if (removed.length) {
+        this.setState(state => (
+          { games: omit(state.games, removed) }
+        ));
+      }
 
-          this.setState(state => (
-            { games: { ...state.games, ...defaults } }
-          ));
+      if (added.length) {
+        const defaults = Object.assign(...added.map(g => ({ [g]: false })));
 
-          const games = await api.getGames(...added);
+        this.setState(state => (
+          {
+            loading: true,
+            games: { ...state.games, ...defaults },
+          }
+        ));
 
-          this.setState(state => (
-            { games: { ...state.games, ...pick(games, Object.keys(state.games)) } }
-          ));
-        }
+        const games = await api.getGames(...added);
+
+        this.setState(state => (
+          {
+            loading: false,
+            games: { ...state.games, ...pick(games, Object.keys(state.games)) },
+          }
+        ));
+      }
+
+      if (!added.length && removed.length) {
+        this.setState({ loading: true });
+        setTimeout(() => { this.setState({ loading: false }); }, 600);
       }
     }
+  }
 
-    renderGames = () => {
-      let { games } = this.state;
-      const { filterLists, glossaries } = this.props;
+  renderGames = () => {
+    let { games } = this.state;
+    const { filterLists, glossaries } = this.props;
 
-      games = pickBy(games, (game) => {
-        if (game) {
-          return Object.entries(filterLists).every(([cat, catFilters]) => {
-            if (catFilters.length) {
-              const { [cat]: ids } = game;
+    games = pickBy(games, (game) => {
+      if (game) {
+        return Object.entries(filterLists).every(([cat, catFilters]) => {
+          if (catFilters.length) {
+            const { [cat]: ids } = game;
 
-              if (ids) {
-                return difference(catFilters, ids).length === 0;
-              }
+            if (ids) {
+              return difference(catFilters, ids).length === 0;
             }
+          }
 
-            return true;
-          });
-        }
+          return true;
+        });
+      }
 
-        return false;
-      });
+      return false;
+    });
 
-      return Object.values(games).map(game => (
-        <Game key={game.appid} glossary={glossaries} {...game} />
-      ));
-    }
+    return Object.values(games).map(game => (
+      <Game key={game.appid} glossary={glossaries} {...game} />
+    ));
+  }
 
-    render() {
+  render() {
+    const { loading } = this.state;
+    if (loading) {
+      // setTimeout(() => { this.setState({ loading: false }); }, 600);
       return (
-        <GameContainer>
-          { this.renderGames() }
+        <GameContainer style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+          <FontAwesomeIcon style={{ fontSize: '30px' }} icon={faSpinner} spin />
         </GameContainer>
       );
     }
+    return (
+      <GameContainer>
+        { this.renderGames() }
+      </GameContainer>
+    );
+  }
 }
+
 
 export default GameList;

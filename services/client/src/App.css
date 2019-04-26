@@ -60,6 +60,16 @@
   outline: none;
 }
 
+@media only screen and (max-width: 500px) {
+  .field {
+    width: 330px !important;
+    margin: auto;
+  }
+  .filtercontainer {
+    width: 330px !important;
+  }
+}
+
 @keyframes App-logo-spin {
   from {
     transform: rotate(0deg);

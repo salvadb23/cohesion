@@ -3,11 +3,13 @@ import PropTypes from 'prop-types';
 
 import { Field, Input } from 'bloomer';
 import styled from 'styled-components';
+import { Button } from 'bloomer/lib/elements/Button';
 
 import { handleInputChange } from '@dacio/react-helpers';
 
 import ProfileCard from './ProfileCard';
 import Filters from './Filters';
+
 
 const ProfileContainer = styled.div`
     padding-top: 100px;
@@ -55,6 +57,13 @@ class ProfileList extends Component {
       }
     }
 
+    handleSubmitButton = () => {
+      const { player } = this.state;
+      const { addPlayers } = this.props;
+      addPlayers(player);
+      this.setState({ player: '' });
+    }
+
 
     renderPlayers = () => {
       const { players, removePlayers } = this.props;
@@ -92,6 +101,7 @@ class ProfileList extends Component {
                 onChange={this.handleChange}
                 onKeyDown={this.handleEnterKey}
               />
+              <Button onClick={this.handleSubmitButton}>submit</Button>
             </Field>
           </InputContainer>
           <Filters {...{ glossaries, filters, toggleFilter }} />

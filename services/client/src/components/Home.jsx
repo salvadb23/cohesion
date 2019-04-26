@@ -1,6 +1,6 @@
 /* eslint-disable jsx-a11y/alt-text */
 import React, { Component } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, Redirect } from 'react-router-dom';
 import { handleInputChange } from '@dacio/react-helpers';
 
 
@@ -34,13 +34,32 @@ const SubFontSize = {
 
 
 class Home extends Component {
-  state = { player: '' };
+  state = {
+    player: '',
+    enter: false,
+  };
 
   handleChange = handleInputChange.bind(this);
 
-  render() {
-    const { player } = this.state;
+  handleEnterKey = (event) => {
+    const { keyCode } = event;
+    if (keyCode === 13) {
+      event.preventDefault();
+      this.setState({ enter: true });
+    }
+  }
 
+  render() {
+    const { player, enter } = this.state;
+    if (enter) {
+      return (
+        <Redirect to={{
+          pathname: '/dashboard',
+          state: { player },
+        }}
+        />
+      );
+    }
     return (
       <Hero className="Hero" isColor="fullheight" style={size}>
         <HeroBody>
@@ -67,9 +86,11 @@ class Home extends Component {
               type="text"
               className="homeinput"
               placeholder="Enter a Steam ID"
+              onFocus={(e) => { e.target.placeholder = ''; }}
               name="player"
               value={player}
               onChange={this.handleChange}
+              onKeyDown={this.handleEnterKey}
               autoComplete="off"
               style={{
                 width: '40vw', height: '40px', border: 'none', textAlign: 'center', borderRadius: '30px', marginBottom: '20px',
@@ -78,7 +99,7 @@ class Home extends Component {
             <Link
               className="link"
               style={{
-                display: 'block', width: '20%', margin: 'auto', fontSize: 'calc(6px + 2vw)',
+                display: 'block', width: '20%', margin: 'auto', fontSize: 'calc(6px + 1vw)',
               }}
               to={{
                 pathname: '/dashboard',

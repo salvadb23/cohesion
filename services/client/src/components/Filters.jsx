@@ -39,9 +39,11 @@ function Filters(props) {
   const { filters, glossaries, toggleFilter } = props;
 
   return (
-    <div style={{
-      width: '400px', margin: 'auto', marginTop: '15px', marginBottom: '30px',
-    }}
+    <div
+      className="filtercontainer"
+      style={{
+        width: '400px', margin: 'auto', marginTop: '15px', marginBottom: '30px',
+      }}
     >
       {
     Object.entries(filters).map(([cat, catFilters]) => {

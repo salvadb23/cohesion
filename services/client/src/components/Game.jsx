@@ -12,7 +12,7 @@ const game = {
   // paddingBottom: '10px',
   paddingTop: '0px',
   margin: 'auto',
-  marginBottom: '15px',
+  marginBottom: '18px',
   // paddingLeft: '20px',
   width: '85%',
   backgroundColor: 'rgb(36,36,36)',
@@ -20,12 +20,15 @@ const game = {
 };
 
 const img = {
-  objectFit: 'contain',
+  objectFit: 'cover',
+  objectPosition: '0 0',
   maxWidth: '100%',
   maxHeight: '100%',
   width: '130px',
   height: '130px',
   backgroundPosition: 'bottom',
+  borderTopLeftRadius: '3px',
+  borderBottomLeftRadius: '3px',
 };
 
 
@@ -41,33 +44,31 @@ function Game(props) { /* eslint-disable camelcase */
   );
 
   return (
-    <a href="http://steam.com">
-      <Media style={game} className="Media">
-        <MediaLeft style={{ marginBottom: '-6px', backgroundPosition: 'top' }}>
-          <img
-            style={img}
-            alt="game cover"
-            src={cover.image_id ? `https://images.igdb.com/igdb/image/upload/t_thumb/${cover.image_id}.png` : `https://dummyimage.com/500x500/ffffff/000000&text=${name}`}
-          />
-        </MediaLeft>
-        <MediaContent style={{ padding: '12px' }}>
-          <Content>
-            <p className="p">
-              <strong className="gamename" style={{ fontSize: '20px' }}>{name}</strong>
-              <br />
-              {/* {game_modes.length && glossary.gamse_modes[game_modes[0]].name} */}
-              <i>{ game_modes.map(mode => glossary.game_modes[mode].name).join(', ') }</i>
-              <br />
-              <strong>Genres: </strong>
-              {genre.map(_genres => _genres).filter(_genre => _genre).join(', ')}
-              <br />
-              <strong>Themes: </strong>
-              {theme && theme.map(_themes => _themes).filter(_theme => _theme).join(', ')}
-            </p>
-          </Content>
-        </MediaContent>
-      </Media>
-    </a>
+    <Media style={game} className="Media">
+      <MediaLeft style={{ marginBottom: '-6px', backgroundPosition: 'top', height: 'inherit' }}>
+        <img
+          style={img}
+          alt="game cover"
+          src={cover.image_id ? `https://images.igdb.com/igdb/image/upload/t_cover_small_2x/${cover.image_id}.png` : `https://dummyimage.com/500x500/000000/ffffff&text=${name}`}
+        />
+      </MediaLeft>
+      <MediaContent style={{ padding: '12px' }}>
+        <Content>
+          <p className="p">
+            <strong className="gamename" style={{ fontSize: '20px' }}>{name}</strong>
+            <br />
+            {/* {game_modes.length && glossary.gamse_modes[game_modes[0]].name} */}
+            <i>{ game_modes.map(mode => glossary.game_modes[mode].name).join(', ') }</i>
+            <br />
+            <strong>Genres: </strong>
+            {genre.map(_genres => _genres).filter(_genre => _genre).join(', ')}
+            <br />
+            <strong>Themes: </strong>
+            {theme.map(_themes => _themes).filter(_theme => _theme).join(', ')}
+          </p>
+        </Content>
+      </MediaContent>
+    </Media>
   );
 }
 

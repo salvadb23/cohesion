@@ -53,7 +53,7 @@ class Dashboard extends Component {
       let glossaries = JSON.parse(localStorage.getItem('glossaries'));
       const { location } = this.props;
 
-      if (location.state !== undefined) {
+      if (location.state) {
         this.addPlayers(location.state.player);
       }
 

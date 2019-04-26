@@ -26,6 +26,7 @@ const marginLeft = {
 
 const marginRight = {
   marginRight: '20px',
+  transition: 'width 2s',
 };
 
 class Navigation extends Component {
