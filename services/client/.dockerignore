@@ -1,0 +1,11 @@
+*
+
+# -- Whitelist --
+!public
+!src
+!package.json
+!yarn.lock
+!default.conf
+
+# -- Blacklist --
+src/setupProxy.js

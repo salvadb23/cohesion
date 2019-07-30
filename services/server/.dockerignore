@@ -1,0 +1,10 @@
+*
+
+# -- Whitelist --
+!package.json
+!yarn.lock
+!utils
+!controllers
+!index.js
+
+# -- Blacklist --
