@@ -2,11 +2,11 @@ version: '3'
 
 services:
   client:
-    image: dacio/cohesion-client:1.1.0
+    build: ./services/client
     depends_on:
       - server
   server:
-    image: dacio/cohesion-server:1.2.0
+    build: ./services/server
     depends_on:
       - cache
     env_file: server.env
