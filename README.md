@@ -1,17 +1,21 @@
-# Cohesion Compose
+# [Cohesion](https://cohesion.dacio.app)
 
-This is the easy way to get a local version up and running.
+A webapp for finding game you can play with your friends
 
-# Usage
+# Getting started
 
-1. Install [Docker](https://www.docker.com/get-started/) and [Docker Compose](https://docs.docker.com/compose/install/)
-1. Get your [Steam API key](https://steamcommunity.com/dev/apikey) and [IGDB API key](https://api.igdb.com/)
-1. Copy server.example.env to server.env and fill in your keys
+1. Install
+    - [Docker](https://www.docker.com/get-started/)
+    - [Docker Compose](https://docs.docker.com/compose/install/)
+1. Get
+    - [Steam API key](https://steamcommunity.com/dev/apikey)
+    - [IGDB API key](https://api.igdb.com/)
+1. Copy `server.example.env` to `server.env` and fill in your keys
 
 ## Development
 
-1. Run `./dev-compose up`
-1. Go to [localhost:8080](http://localhost:8800)
+1. Run `npm run docker:dev up`
+1. Visit [localhost:8080](http://localhost:8080)
 
 ## Production
 
@@ -19,3 +23,9 @@ This is the easy way to get a local version up and running.
 1. Create a `.env` file with `DOMAIN=[SUB.YOUR_DOMAIN]`
 1. Run `./prod-compose up`
 1. Visit [SUB.YOUR_DOMAIN]
+
+# Usage
+
+1. Enter your own SteamID, community URL, or vanity name
+1. Enter your friends' as well
+1. Filter the games you can play together
