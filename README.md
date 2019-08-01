@@ -14,14 +14,19 @@ A webapp for finding game you can play with your friends
 
 ## Development
 
-1. Run `npm run docker:dev up`
+1. Run `yarn compose:dev up`
+1. Visit [localhost:3000](http://localhost:3000)
+
+## Development
+
+1. Run `yarn compose:local up`
 1. Visit [localhost:8080](http://localhost:8080)
 
 ## Production
 
 1. Start Traefik using their [quickstart config](https://docs.traefik.io/#the-traefik-quickstart-using-docker)
 1. Create a `.env` file with `DOMAIN=[SUB.YOUR_DOMAIN]`
-1. Run `npm run docker:prod up`
+1. Run `yarn compose:prod up`
 1. Visit [SUB.YOUR_DOMAIN]
 
 # Usage

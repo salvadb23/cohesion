@@ -16,7 +16,12 @@ services:
     env_file: ./services/server/.env
     environment:
       - REDIS_URL=redis://cache
-  cache:
-    image: redis:5.0.4-alpine
+  proxy:
+    image: nginx:1.15.11-alpine
     volumes:
-      - ./data/db:/data/db
+      - ./default.conf:/etc/nginx/conf.d/default.conf
+    depends_on:
+      - server
+      - client
+    ports:
+      - 8080:80
