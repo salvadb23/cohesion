@@ -10,7 +10,7 @@ A webapp for finding game you can play with your friends
 1. Get
     - [Steam API key](https://steamcommunity.com/dev/apikey)
     - [IGDB API key](https://api.igdb.com/)
-1. Copy `server.example.env` to `server.env` and fill in your keys
+1. Copy `services/server/.env.example` to `services/server/.env` and fill in your keys
 
 ## Development
 
@@ -21,7 +21,7 @@ A webapp for finding game you can play with your friends
 
 1. Start Traefik using their [quickstart config](https://docs.traefik.io/#the-traefik-quickstart-using-docker)
 1. Create a `.env` file with `DOMAIN=[SUB.YOUR_DOMAIN]`
-1. Run `./prod-compose up`
+1. Run `npm run docker:prod up`
 1. Visit [SUB.YOUR_DOMAIN]
 
 # Usage

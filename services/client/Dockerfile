@@ -1,19 +1,22 @@
-# Build
-FROM node:11.13.0-alpine
+ARG node_version=11.13.0
+ARG nginx_version=1.15.11
+
+# --- BUILD ---
+
+FROM node:${node_version} as build
 
 WORKDIR /usr/src/app
 
-COPY package.json yarn.lock ./
-RUN yarn install --production
+COPY yarn.lock services/client/package.json ./
+RUN yarn install --pure-lockfile --no-cache
+COPY services/client/src ./src
+COPY services/client/public ./public
 
-COPY public public
-COPY src src
 RUN SKIP_PREFLIGHT_CHECK=true yarn build
 
-# Serve
-FROM nginx:1.15.11-alpine
+# --- SERVE ---
 
-COPY --from=0 /usr/src/app/build /usr/share/nginx/html
-COPY default.conf /etc/nginx/conf.d/default.conf
+FROM nginx:${nginx_version}-alpine
 
-EXPOSE 80
+COPY services/client/default.conf /etc/nginx/conf.d/default.conf
+COPY --from=build /usr/src/app/build /usr/share/nginx/html

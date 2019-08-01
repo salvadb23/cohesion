@@ -2,14 +2,18 @@ version: '3'
 
 services:
   client:
-    build: ./services/client
+    build:
+      context: .
+      dockerfile: ./services/client/Dockerfile
     depends_on:
       - server
   server:
-    build: ./services/server
+    build:
+      context: .
+      dockerfile: ./services/server/Dockerfile
     depends_on:
       - cache
-    env_file: server.env
+    env_file: ./services/server/.env
     environment:
       - REDIS_URL=redis://cache
   cache:

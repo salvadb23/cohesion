@@ -1,0 +1,6 @@
+*
+
+# -- Whitelist --
+!package.json
+!yarn.lock
+!services/
